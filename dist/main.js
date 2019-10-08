@@ -86,8 +86,46 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+
+
+const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
+  title: 'First task',
+  description: 'Testing a new task',
+  dueDate: '20019/10/02',
+});
+
+console.log(todo);
+// console.log(todo2.getTitle());
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const Todo = ({
+  title, description, dueDate, priority,
+}) => {
+  const getTitle = () => title;
+  const getDescription = () => description;
+
+  const proto = { getTitle, getDescription };
+
+  return Object.freeze(Object.assign(Object.create(proto), {
+    title, description, dueDate, priority,
+  }));
+  // return Object.freeze({ getTitle, getDescription });
+  // return Object.freeze(Object.assign({ getTitle, getDescription }));
+  // return Object.freeze(Object.assign({}, { getTitle, getDescription }));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Todo);
 
 
 /***/ })
