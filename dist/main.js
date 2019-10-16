@@ -91,6 +91,8 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _project__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+
 
 
 const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
@@ -148,6 +150,42 @@ const Todo = (state) => {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Todo);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const Project = (state) => {
+  let { title } = state;
+  const todos = [];
+
+  const getTitle = () => title;
+
+  const setTitle = (t) => {
+    title = t || title;
+  };
+
+  const getTodos = () => todos;
+
+  const addTodo = (todo) => {
+    todos.push(todo);
+    return todo;
+  };
+
+  const removeTodo = (name) => {
+    const todoIndex = todos.findIndex((todo) => todo.name === name);
+    return todos.splice(todoIndex, 1);
+  };
+
+  return {
+    getTitle, setTitle, getTodos, addTodo, removeTodo,
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Project);
 
 
 /***/ })

@@ -1,4 +1,5 @@
 import Todo from './todo';
+import Project from './project';
 
 const todo = Todo({
   title: 'First task',
