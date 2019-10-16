@@ -1,17 +1,42 @@
-const Todo = ({
-  title, description, dueDate, priority,
-}) => {
+const Todo = (state) => {
+  let {
+    title, description, dueDate, priority,
+  } = state;
+
   const getTitle = () => title;
+
+  const setTitle = (t) => {
+    title = t || title;
+  };
+
   const getDescription = () => description;
 
-  const proto = { getTitle, getDescription };
+  const setDescription = (d) => {
+    description = d || description;
+  };
 
-  return Object.freeze(Object.assign(Object.create(proto), {
-    title, description, dueDate, priority,
-  }));
-  // return Object.freeze({ getTitle, getDescription });
-  // return Object.freeze(Object.assign({ getTitle, getDescription }));
-  // return Object.freeze(Object.assign({}, { getTitle, getDescription }));
+  const getDueDate = () => dueDate;
+
+  const setDueDate = (dd) => {
+    dueDate = dd || dueDate;
+  };
+
+  const getPriority = () => priority;
+
+  const setPriority = (p) => {
+    priority = p || priority;
+  };
+
+  return {
+    getTitle,
+    setTitle,
+    getDescription,
+    setDescription,
+    getDueDate,
+    setDueDate,
+    getPriority,
+    setPriority,
+  };
 };
 
 export default Todo;

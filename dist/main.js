@@ -99,9 +99,6 @@ const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
   dueDate: '20019/10/02',
 });
 
-console.log(todo);
-// console.log(todo2.getTitle());
-
 
 /***/ }),
 /* 1 */
@@ -109,20 +106,45 @@ console.log(todo);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const Todo = ({
-  title, description, dueDate, priority,
-}) => {
+const Todo = (state) => {
+  let {
+    title, description, dueDate, priority,
+  } = state;
+
   const getTitle = () => title;
+
+  const setTitle = (t) => {
+    title = t || title;
+  };
+
   const getDescription = () => description;
 
-  const proto = { getTitle, getDescription };
+  const setDescription = (d) => {
+    description = d || description;
+  };
 
-  return Object.freeze(Object.assign(Object.create(proto), {
-    title, description, dueDate, priority,
-  }));
-  // return Object.freeze({ getTitle, getDescription });
-  // return Object.freeze(Object.assign({ getTitle, getDescription }));
-  // return Object.freeze(Object.assign({}, { getTitle, getDescription }));
+  const getDueDate = () => dueDate;
+
+  const setDueDate = (dd) => {
+    dueDate = dd || dueDate;
+  };
+
+  const getPriority = () => priority;
+
+  const setPriority = (p) => {
+    priority = p || priority;
+  };
+
+  return {
+    getTitle,
+    setTitle,
+    getDescription,
+    setDescription,
+    getDueDate,
+    setDueDate,
+    getPriority,
+    setPriority,
+  };
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Todo);
