@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Todo-list App</title>
-  <script src="main.js"></script>
-</head>
-<body>
-  <div class="sidebar">
-    <a href="#" id="default-project">
-      Default Project
-    </a>
-  </div>
-  <div id="main-section">
-    <div id="project">
-      
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Todo-list App</title>
+    <script src="main.js"></script>
+  </head>
+  <body>
+    <div class="sidebar">
+      <a href="#" id="default-project">
+        Default Project
+      </a>
     </div>
-  </div>
-
-  <!-- Templates -->
-
-  <!-- Project container template -->
-  <template id="project-template">
-    <h1 class="title"> </h1>
-    <div class="content">
-
+    <div id="main-section">
+      <div id="project">
+        
+      </div>
     </div>
-  </template>
-</body>
+
+    <!-- Templates -->
+
+    <!-- Project container template -->
+    <template id="project-template">
+      <h1 class="title"> </h1>
+      <div class="content">
+
+      </div>
+    </template>
+
+    <!-- Todo template -->
+    <template id="todo-template">
+      <div class="todo">
+        <h2 class="todo-title"></h2>
+        <p class="todo-description"></p>
+        <span class="todo-due-date"></span>
+        <span class="todo-priority"></span>
+      </div>
+    </template>
+  </body>
 </html>

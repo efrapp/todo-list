@@ -112,23 +112,15 @@ const dummyProject = () => {
 };
 
 const createTodoHTML = (todo) => {
-  const todoNode = document.createElement('div');
-  const titleNode = document.createElement('h2');
-  const descriptionNode = document.createElement('p');
-  const dueDateNode = document.createElement('p');
-  const priorityNode = document.createElement('p');
+  const todoTemplate = document.getElementById('todo-template');
+  const todoContent = document.importNode(todoTemplate.content, true);
 
-  titleNode.textContent = todo.getTitle();
-  descriptionNode.textContent = todo.getDescription();
-  dueDateNode.textContent = todo.getDueDate();
-  priorityNode.textContent = todo.getPriority();
+  todoContent.querySelector('.todo-title').textContent = todo.getTitle();
+  todoContent.querySelector('.todo-description').textContent = todo.getDescription();
+  todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
+  todoContent.querySelector('.todo-priority').textContent = todo.getPriority();
 
-  todoNode.appendChild(titleNode);
-  todoNode.appendChild(descriptionNode);
-  todoNode.appendChild(dueDateNode);
-  todoNode.appendChild(priorityNode);
-
-  return todoNode;
+  return todoContent;
 };
 
 const displayProject = (project) => {
