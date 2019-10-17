@@ -38,19 +38,17 @@ const createTodoHTML = (todo) => {
 };
 
 const displayProject = (project) => {
-  const projectTitleNode = document.createElement('h1');
-  const projectContainerNode = document.getElementById('project');
-  const todoContainerNode = document.createElement('div');
-  let todoNode;
+  const projectNode = document.getElementById('project');
+  const projectTemplate = document.getElementById('project-template');
+  const projectContent = document.importNode(projectTemplate.content, true);
 
   project.getTodos().forEach((todo) => {
-    todoNode = createTodoHTML(todo);
-    todoContainerNode.appendChild(todoNode);
+    const todoNode = createTodoHTML(todo);
+    projectContent.querySelector('.content').appendChild(todoNode);
   });
 
-  projectTitleNode.textContent = project.getTitle();
-  projectContainerNode.appendChild(projectTitleNode);
-  projectContainerNode.appendChild(todoContainerNode);
+  projectContent.querySelector('.title').textContent = project.getTitle();
+  projectNode.appendChild(projectContent);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
