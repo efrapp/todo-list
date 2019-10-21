@@ -5,13 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Todo-list App</title>
-    <script src="main.js"></script>
+    <!-- <script src="main.js"></script> -->
+    <script src="test.js"></script>
   </head>
   <body>
     <div class="sidebar">
-      <a href="#" id="default-project">
-        Default Project
-      </a>
+      <button id="new-project"> Create new project </button>
+      <ul id="projects-list">
+        <li>
+          <a id="default-project-link" href="#" class="project-link">
+            Default Project
+          </a>
+        </li>
+      </ul>
     </div>
     <div id="main-section">
       <div id="project">
@@ -37,6 +43,13 @@
         <span class="todo-due-date"></span>
         <span class="todo-priority"></span>
       </div>
+    </template>
+
+    <!-- Projects list template -->
+    <template id="projects-list-template">
+      <li>
+        <a href="#" class="project-link"> </a>
+      </li>
     </template>
   </body>
 </html>

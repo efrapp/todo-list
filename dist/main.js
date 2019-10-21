@@ -95,12 +95,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const projects = [];
+
 const dummyProject = () => {
   const defaultProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: 'Default Project' });
-  let todo;
 
   for (let i = 0; i < 5; i += 1) {
-    todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
+    const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
       title: 'First task',
       description: 'Testing a new task',
       dueDate: '20019/10/02',
@@ -137,15 +138,24 @@ const displayProject = (project) => {
   projectNode.appendChild(projectContent);
 };
 
+const findProject = (title) => {
+  const projectIndex = projects.findIndex((project) => project.getTitle() === title);
+  return projects[projectIndex];
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const defaultProject = dummyProject();
-  const defaultProjectLink = document.getElementById('default-project');
+  const defaultProjectLink = document.getElementById('default-project-link');
+  const projectLink = document.querySelector('.project-link');
+
+  projects.push(defaultProject);
 
   defaultProjectLink.textContent = defaultProject.getTitle();
   displayProject(defaultProject);
 
-  defaultProjectLink.addEventListener('click', () => {
-    // displayProject(defaultProject);
+  projectLink.addEventListener('click', () => {
+    const currentProject = findProject(projectLink.textContent);
+    displayProject(currentProject);
   });
 });
 
