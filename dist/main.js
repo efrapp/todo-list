@@ -166,13 +166,12 @@ const displayProject = (project) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const defaultProject = dummyProject();
-  const defaultProjectLink = document.getElementById('default-project-link');
   const projectsList = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
 
   projects.push(defaultProject);
 
-  defaultProjectLink.textContent = defaultProject.getTitle();
+  listProjectTitle(defaultProject);
   createProject(defaultProject);
 
   // Show selected project
