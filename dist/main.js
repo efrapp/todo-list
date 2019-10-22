@@ -140,6 +140,8 @@ const createProject = (project) => {
   projectContent.querySelector('.title').textContent = project.getTitle();
   projectContainer.appendChild(projectContent);
   projectNode.appendChild(projectContainer);
+
+  return project;
 };
 
 const findProject = (title) => {
@@ -161,7 +163,16 @@ const listProjectTitle = (project) => {
 };
 
 const displayProject = (project) => {
+  const projectsContainer = document.getElementById('projects');
 
+  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
+    const p = pject;
+    p.style.display = 'none';
+  });
+
+  projectsContainer.children.namedItem(`${project.id}`).style.display = 'block';
+
+  return project;
 };
 
 document.addEventListener('DOMContentLoaded', () => {
