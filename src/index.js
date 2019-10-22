@@ -31,17 +31,21 @@ const createTodoHTML = (todo) => {
 };
 
 const createProject = (project) => {
-  const projectNode = document.getElementById('project');
+  const projectContainer = document.createElement('div');
+  const projectNode = document.getElementById('projects');
   const projectTemplate = document.getElementById('project-template');
   const projectContent = document.importNode(projectTemplate.content, true);
-  // projectContent.querySelector('.content').innerHTML = '';
+
+  projectContainer.id = project.id;
+
   project.getTodos().forEach((todo) => {
     const todoNode = createTodoHTML(todo);
     projectContent.querySelector('.content').appendChild(todoNode);
   });
 
   projectContent.querySelector('.title').textContent = project.getTitle();
-  projectNode.appendChild(projectContent);
+  projectContainer.appendChild(projectContent);
+  projectNode.appendChild(projectContainer);
 };
 
 const findProject = (title) => {

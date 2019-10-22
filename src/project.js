@@ -1,6 +1,10 @@
+let id = -1;
+
 const Project = (state) => {
   let { title } = state;
   const todos = [];
+
+  id += 1;
 
   const getTitle = () => title;
 
@@ -20,9 +24,11 @@ const Project = (state) => {
     return todos.splice(todoIndex, 1);
   };
 
-  return {
+  const proto = {
     getTitle, setTitle, getTodos, addTodo, removeTodo,
   };
+
+  return Object.assign(Object.create(proto), { id, title });
 };
 
 export default Project;

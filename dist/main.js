@@ -125,17 +125,21 @@ const createTodoHTML = (todo) => {
 };
 
 const createProject = (project) => {
-  const projectNode = document.getElementById('project');
+  const projectContainer = document.createElement('div');
+  const projectNode = document.getElementById('projects');
   const projectTemplate = document.getElementById('project-template');
   const projectContent = document.importNode(projectTemplate.content, true);
-  // projectContent.querySelector('.content').innerHTML = '';
+
+  projectContainer.id = project.id;
+
   project.getTodos().forEach((todo) => {
     const todoNode = createTodoHTML(todo);
     projectContent.querySelector('.content').appendChild(todoNode);
   });
 
   projectContent.querySelector('.title').textContent = project.getTitle();
-  projectNode.appendChild(projectContent);
+  projectContainer.appendChild(projectContent);
+  projectNode.appendChild(projectContainer);
 };
 
 const findProject = (title) => {
@@ -246,9 +250,13 @@ const Todo = (state) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+let id = -1;
+
 const Project = (state) => {
   let { title } = state;
   const todos = [];
+
+  id += 1;
 
   const getTitle = () => title;
 
@@ -268,9 +276,11 @@ const Project = (state) => {
     return todos.splice(todoIndex, 1);
   };
 
-  return {
+  const proto = {
     getTitle, setTitle, getTodos, addTodo, removeTodo,
   };
+
+  return Object.assign(Object.create(proto), { id, title });
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Project);
