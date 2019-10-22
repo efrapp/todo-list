@@ -30,11 +30,11 @@ const createTodoHTML = (todo) => {
   return todoContent;
 };
 
-const displayProject = (project) => {
+const createProject = (project) => {
   const projectNode = document.getElementById('project');
   const projectTemplate = document.getElementById('project-template');
   const projectContent = document.importNode(projectTemplate.content, true);
-
+  // projectContent.querySelector('.content').innerHTML = '';
   project.getTodos().forEach((todo) => {
     const todoNode = createTodoHTML(todo);
     projectContent.querySelector('.content').appendChild(todoNode);
@@ -49,18 +49,48 @@ const findProject = (title) => {
   return projects[projectIndex];
 };
 
+// Add project title to the list project in the sidebar
+const listProjectTitle = (project) => {
+  const projectsList = document.getElementById('projects-list');
+  const projectsListTemplate = document.getElementById('projects-list-template');
+  const projectsListContent = document.importNode(projectsListTemplate.content, true);
+
+  projectsListContent.querySelector('.project-link').textContent = project.getTitle();
+
+  projectsList.appendChild(projectsListContent);
+};
+
+const displayProject = (project) => {
+
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const defaultProject = dummyProject();
   const defaultProjectLink = document.getElementById('default-project-link');
-  const projectLink = document.querySelector('.project-link');
+  const projectsList = document.getElementById('projects-list');
+  const createProjectBtn = document.getElementById('create-project');
 
   projects.push(defaultProject);
 
   defaultProjectLink.textContent = defaultProject.getTitle();
-  displayProject(defaultProject);
+  createProject(defaultProject);
 
-  projectLink.addEventListener('click', () => {
-    const currentProject = findProject(projectLink.textContent);
-    displayProject(currentProject);
+  // Show selected project
+  projectsList.addEventListener('click', (e) => {
+    if (e.target && e.target.matches('a.project-link')) {
+      const currentProject = findProject(e.target.textContent);
+
+      displayProject(currentProject);
+    }
+  });
+
+  // Create a project
+  createProjectBtn.addEventListener('click', () => {
+    const projectNameInput = document.getElementById('project-name');
+    const newProject = Project({ title: projectNameInput.value });
+
+    projects.push(newProject);
+    listProjectTitle(newProject);
+    createProject(newProject);
   });
 });

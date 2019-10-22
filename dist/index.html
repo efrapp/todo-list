@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Todo-list App</title>
-    <!-- <script src="main.js"></script> -->
-    <script src="test.js"></script>
+    <script src="main.js"></script>
   </head>
   <body>
     <div class="sidebar">
-      <button id="new-project"> Create new project </button>
+      <button id="new-project"> New project </button>
       <ul id="projects-list">
         <li>
           <a id="default-project-link" href="#" class="project-link">
@@ -22,6 +21,12 @@
     <div id="main-section">
       <div id="project">
         
+      </div>
+      <div id="new-project">
+        <h2> Add New Project </h2>
+        <label for="project-name"> Name: </label>
+        <input type="text" name="project[name]" id="project-name">
+        <button id="create-project"> Create new project </button>
       </div>
     </div>
 
