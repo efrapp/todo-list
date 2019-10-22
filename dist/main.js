@@ -152,8 +152,10 @@ const listProjectTitle = (project) => {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');
   const projectsListContent = document.importNode(projectsListTemplate.content, true);
+  const projectLink = projectsListContent.querySelector('.project-link');
 
-  projectsListContent.querySelector('.project-link').textContent = project.getTitle();
+  projectLink.textContent = project.getTitle();
+  projectLink.setAttribute('data-id', project.id);
 
   projectsList.appendChild(projectsListContent);
 };
