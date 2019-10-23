@@ -130,7 +130,7 @@ const createProject = (project) => {
   const projectTemplate = document.getElementById('project-template');
   const projectContent = document.importNode(projectTemplate.content, true);
 
-  projectContainer.id = project.id;
+  projectContainer.setAttribute('data-project-id', project.id);
 
   project.getTodos().forEach((todo) => {
     const todoNode = createTodoHTML(todo);
@@ -138,14 +138,11 @@ const createProject = (project) => {
   });
 
   projectContent.querySelector('.title').textContent = project.getTitle();
-  projectContainer.appendChild(projectContent);
+  projectContainer.prepend(projectContent);
   projectNode.appendChild(projectContainer);
 };
 
-const findProject = (title) => {
-  const projectIndex = projects.findIndex((project) => project.getTitle() === title);
-  return projects[projectIndex];
-};
+const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
 
 // Add project title to the list project in the sidebar
 const listProjectTitle = (project) => {
@@ -155,7 +152,7 @@ const listProjectTitle = (project) => {
   const projectLink = projectsListContent.querySelector('.project-link');
 
   projectLink.textContent = project.getTitle();
-  projectLink.setAttribute('data-id', project.id);
+  projectLink.setAttribute('data-project-id', project.id);
 
   projectsList.appendChild(projectsListContent);
 };
@@ -168,7 +165,9 @@ const displayProject = (project) => {
     p.style.display = 'none';
   });
 
-  projectsContainer.children.namedItem(`${project.id}`).style.display = 'block';
+  Array.prototype.find.call(projectsContainer.children,
+    (p) => parseInt(p.dataset.projectId, 10) === project.id)
+    .style.display = 'block';
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -187,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show selected project
   projectsList.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
-      const currentProject = findProject(e.target.textContent);
+      const currentProject = findProject(e.target.dataset.projectId);
 
       displayProject(currentProject);
     }
