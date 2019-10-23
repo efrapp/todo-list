@@ -46,8 +46,6 @@ const createProject = (project) => {
   projectContent.querySelector('.title').textContent = project.getTitle();
   projectContainer.appendChild(projectContent);
   projectNode.appendChild(projectContainer);
-
-  return project;
 };
 
 const findProject = (title) => {
@@ -77,8 +75,6 @@ const displayProject = (project) => {
   });
 
   projectsContainer.children.namedItem(`${project.id}`).style.display = 'block';
-
-  return project;
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -88,8 +84,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   projects.push(defaultProject);
 
-  listProjectTitle(defaultProject);
   createProject(defaultProject);
+
+  projects.forEach((p) => {
+    listProjectTitle(p);
+  });
 
   // Show selected project
   projectsList.addEventListener('click', (e) => {
@@ -108,5 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
     projects.push(newProject);
     listProjectTitle(newProject);
     createProject(newProject);
+    displayProject(newProject);
   });
 });
