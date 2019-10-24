@@ -195,7 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show selected project
   projectsList.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
-      displayProject(findProject(e.target.dataset.projectId));
+      const project = findProject(e.target.dataset.projectId);
+      setCurrentProject(project);
+      displayProject();
     }
   });
 
