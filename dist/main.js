@@ -113,6 +113,20 @@ const dummyProject = () => {
   return defaultProject;
 };
 
+const findProjectNode = (project) => {
+  const projectsContainer = document.getElementById('projects');
+
+  return Array.prototype.find.call(projectsContainer.children,
+    (p) => parseInt(p.dataset.projectId, 10) === project.id);
+};
+
+const setCurrentProject = (p) => {
+  currentProject.node = findProjectNode(p);
+  currentProject.obj = p;
+
+  return currentProject;
+};
+
 const createTodoNode = (todo) => {
   const todoTemplate = document.getElementById('todo-template');
   const todoContent = document.importNode(todoTemplate.content, true);
@@ -126,47 +140,20 @@ const createTodoNode = (todo) => {
   return todoContent;
 };
 
-const createProjectNode = (project) => {
-  const projectContainer = document.createElement('div');
-  const projectNode = document.getElementById('projects');
-  const projectTemplate = document.getElementById('project-template');
-  const projectContent = document.importNode(projectTemplate.content, true);
-
-  projectContainer.setAttribute('data-project-id', project.id);
-
-  project.getTodos().forEach((todo) => {
-    const todoNode = createTodoNode(todo);
-    projectContent.querySelector('.content').appendChild(todoNode);
-  });
-
-  projectContent.querySelector('.title').textContent = project.getTitle();
-  projectContainer.prepend(projectContent);
-  projectNode.appendChild(projectContainer);
-};
-
-const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
-
 // Add project title to the list project in the sidebar
-const listProjectTitle = (project) => {
+const listProjectTitle = () => {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');
   const projectsListContent = document.importNode(projectsListTemplate.content, true);
   const projectLink = projectsListContent.querySelector('.project-link');
 
-  projectLink.textContent = project.getTitle();
-  projectLink.setAttribute('data-project-id', project.id);
+  projectLink.textContent = currentProject.obj.getTitle();
+  projectLink.setAttribute('data-project-id', currentProject.obj.id);
 
   projectsList.appendChild(projectsListContent);
 };
 
-const findProjectNode = (project) => {
-  const projectsContainer = document.getElementById('projects');
-
-  return Array.prototype.find.call(projectsContainer.children,
-    (p) => parseInt(p.dataset.projectId, 10) === project.id);
-};
-
-const displayProject = (project) => {
+const displayProject = () => {
   const projectsContainer = document.getElementById('projects');
 
   Array.prototype.forEach.call(projectsContainer.children, (pject) => {
@@ -174,22 +161,27 @@ const displayProject = (project) => {
     p.style.display = 'none';
   });
 
-  findProjectNode(project).style.display = 'block';
+  currentProject.node.style.display = 'block';
 };
 
-const setCurrentProject = (p) => {
-  currentProject.node = findProjectNode(p);
-  currentProject.obj = p;
+const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
 
-  return currentProject;
-};
+const createProject = (project) => {
+  const projectContainer = document.createElement('div');
+  const projectNode = document.getElementById('projects');
+  const projectTemplate = document.getElementById('project-template');
+  const projectContent = document.importNode(projectTemplate.content, true);
 
-const processProject = (project) => {
+  projectContainer.setAttribute('data-project-id', project.id);
+
+  projectContent.querySelector('.title').textContent = project.getTitle();
+  projectContainer.prepend(projectContent);
+  projectNode.appendChild(projectContainer);
+
   projects.push(project);
-  listProjectTitle(project);
-  createProjectNode(project);
-  displayProject(project);
   setCurrentProject(project);
+  listProjectTitle();
+  displayProject();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -198,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const createProjectBtn = document.getElementById('create-project');
   const projectsNode = document.getElementById('projects');
 
-  processProject(defaultProject);
+  createProject(defaultProject);
 
   // Show selected project
   projectsList.addEventListener('click', (e) => {
@@ -212,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: projectNameInput.value });
 
-    processProject(newProject);
+    createProject(newProject);
   });
 
   projectsNode.addEventListener('click', (e) => {
