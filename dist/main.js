@@ -227,10 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+let id = -1;
+
 const Todo = (state) => {
   let {
     title, description, dueDate, priority,
   } = state;
+
+  id += 1;
 
   const getTitle = () => title;
 
@@ -256,7 +260,7 @@ const Todo = (state) => {
     priority = p || priority;
   };
 
-  return {
+  const proto = {
     getTitle,
     setTitle,
     getDescription,
@@ -266,6 +270,10 @@ const Todo = (state) => {
     getPriority,
     setPriority,
   };
+
+  return Object.assign(Object.create(proto), {
+    id, title, description, dueDate, priority,
+  });
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Todo);
