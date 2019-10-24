@@ -31,7 +31,7 @@ const createTodoNode = (todo) => {
   return todoContent;
 };
 
-const createProject = (project) => {
+const createProjectNode = (project) => {
   const projectContainer = document.createElement('div');
   const projectNode = document.getElementById('projects');
   const projectTemplate = document.getElementById('project-template');
@@ -92,7 +92,7 @@ const setCurrentProject = (p) => {
 const processProject = (project) => {
   projects.push(project);
   listProjectTitle(project);
-  createProject(project);
+  createProjectNode(project);
   displayProject(project);
   setCurrentProject(project);
 };
