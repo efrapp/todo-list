@@ -225,7 +225,9 @@ document.addEventListener('DOMContentLoaded', () => {
         title, description, dueDate, priority,
       });
 
-      console.log(todo);
+      currentProject.obj.addTodo(todo);
+      currentProject.node.querySelector('.content')
+        .appendChild(createTodoNode(todo));
     }
   });
 });
