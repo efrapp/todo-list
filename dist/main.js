@@ -117,6 +117,7 @@ const createTodoNode = (todo) => {
   const todoTemplate = document.getElementById('todo-template');
   const todoContent = document.importNode(todoTemplate.content, true);
 
+  todoContent.querySelector('.todo').setAttribute('data-todo-id', todo.id);
   todoContent.querySelector('.todo-title').textContent = todo.getTitle();
   todoContent.querySelector('.todo-description').textContent = todo.getDescription();
   todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
