@@ -112,7 +112,7 @@ const dummyProject = () => {
   return defaultProject;
 };
 
-const createTodoHTML = (todo) => {
+const createTodoNode = (todo) => {
   const todoTemplate = document.getElementById('todo-template');
   const todoContent = document.importNode(todoTemplate.content, true);
 
@@ -133,7 +133,7 @@ const createProject = (project) => {
   projectContainer.setAttribute('data-project-id', project.id);
 
   project.getTodos().forEach((todo) => {
-    const todoNode = createTodoHTML(todo);
+    const todoNode = createTodoNode(todo);
     projectContent.querySelector('.content').appendChild(todoNode);
   });
 
@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const defaultProject = dummyProject();
   const projectsList = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
+  const projectsNode = document.getElementById('projects');
 
   projects.push(defaultProject);
 
@@ -201,6 +202,21 @@ document.addEventListener('DOMContentLoaded', () => {
     listProjectTitle(newProject);
     createProject(newProject);
     displayProject(newProject);
+  });
+
+  projectsNode.addEventListener('click', (e) => {
+    const button = e.target;
+    if (button && button.matches('button.create-todo-btn')) {
+      const title = button.parentElement.querySelector('.todo-title-field').value;
+      const description = button.parentElement.querySelector('.todo-description-field').value;
+      const dueDate = button.parentElement.querySelector('.todo-due-date-field').value;
+      const priority = button.parentElement.querySelector('.todo-priority-field').value;
+      const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
+        title, description, dueDate, priority,
+      });
+
+      console.log(todo);
+    }
   });
 });
 
