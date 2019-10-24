@@ -96,6 +96,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const projects = [];
+const currentProject = {};
 
 const dummyProject = () => {
   const defaultProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: 'Default Project' });
@@ -157,6 +158,13 @@ const listProjectTitle = (project) => {
   projectsList.appendChild(projectsListContent);
 };
 
+const findProjectNode = (project) => {
+  const projectsContainer = document.getElementById('projects');
+
+  return Array.prototype.find.call(projectsContainer.children,
+    (p) => parseInt(p.dataset.projectId, 10) === project.id);
+};
+
 const displayProject = (project) => {
   const projectsContainer = document.getElementById('projects');
 
@@ -165,9 +173,14 @@ const displayProject = (project) => {
     p.style.display = 'none';
   });
 
-  Array.prototype.find.call(projectsContainer.children,
-    (p) => parseInt(p.dataset.projectId, 10) === project.id)
-    .style.display = 'block';
+  findProjectNode(project).style.display = 'block';
+};
+
+const setCurrentProject = (p) => {
+  currentProject.node = findProjectNode(p);
+  currentProject.obj = p;
+
+  return currentProject;
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -187,13 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show selected project
   projectsList.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
-      const currentProject = findProject(e.target.dataset.projectId);
-
-      displayProject(currentProject);
+      displayProject(findProject(e.target.dataset.projectId));
     }
   });
 
-  // Create a project
+  // Create a project node
   createProjectBtn.addEventListener('click', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: projectNameInput.value });
@@ -202,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     listProjectTitle(newProject);
     createProject(newProject);
     displayProject(newProject);
+    setCurrentProject(newProject);
   });
 
   projectsNode.addEventListener('click', (e) => {
