@@ -183,19 +183,21 @@ const setCurrentProject = (p) => {
   return currentProject;
 };
 
+const processProject = (project) => {
+  projects.push(project);
+  listProjectTitle(project);
+  createProject(project);
+  displayProject(project);
+  setCurrentProject(project);
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const defaultProject = dummyProject();
   const projectsList = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
   const projectsNode = document.getElementById('projects');
 
-  projects.push(defaultProject);
-
-  createProject(defaultProject);
-
-  projects.forEach((p) => {
-    listProjectTitle(p);
-  });
+  processProject(defaultProject);
 
   // Show selected project
   projectsList.addEventListener('click', (e) => {
@@ -209,11 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: projectNameInput.value });
 
-    projects.push(newProject);
-    listProjectTitle(newProject);
-    createProject(newProject);
-    displayProject(newProject);
-    setCurrentProject(newProject);
+    processProject(newProject);
   });
 
   projectsNode.addEventListener('click', (e) => {
