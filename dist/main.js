@@ -95,7 +95,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const projects = [];
+let projects = [];
 const currentProject = {};
 
 const dummyProject = () => {
@@ -140,15 +140,23 @@ const createTodoNode = (todo) => {
   return todoContent;
 };
 
+const displayTodos = () => {
+  currentProject.obj.getTodos().forEach((todo) => {
+    const todoNode = createTodoNode(todo);
+    currentProject.node.querySelector('.content').appendChild(todoNode);
+  });
+};
+
 // Add project title to the list project in the sidebar
 const listProjectTitle = () => {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');
   const projectsListContent = document.importNode(projectsListTemplate.content, true);
+  const projectActions = projectsListContent.querySelector('.project-actions');
   const projectLink = projectsListContent.querySelector('.project-link');
 
   projectLink.textContent = currentProject.obj.getTitle();
-  projectLink.setAttribute('data-project-id', currentProject.obj.id);
+  projectActions.setAttribute('data-project-id', currentProject.obj.id);
 
   projectsList.appendChild(projectsListContent);
 };
@@ -162,6 +170,7 @@ const displayProject = () => {
   });
 
   currentProject.node.style.display = 'block';
+  displayTodos();
 };
 
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
@@ -195,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show selected project
   projectsList.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
-      const project = findProject(e.target.dataset.projectId);
+      const project = findProject(e.target.parentElement.dataset.projectId);
       setCurrentProject(project);
       displayProject();
     }
