@@ -1,7 +1,7 @@
 import Todo from './todo';
 import Project from './project';
 
-let projects = [];
+const projects = [];
 const currentProject = {};
 
 const dummyProject = () => {
@@ -9,7 +9,7 @@ const dummyProject = () => {
 
   for (let i = 0; i < 5; i += 1) {
     const todo = Todo({
-      title: 'First task',
+      title: `First #${i}`,
       description: 'Testing a new task',
       dueDate: '20019/10/02',
     });
@@ -76,7 +76,6 @@ const displayProject = () => {
   });
 
   currentProject.node.style.display = 'block';
-  displayTodos();
 };
 
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));

@@ -95,7 +95,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-let projects = [];
+const projects = [];
 const currentProject = {};
 
 const dummyProject = () => {
@@ -103,7 +103,7 @@ const dummyProject = () => {
 
   for (let i = 0; i < 5; i += 1) {
     const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
-      title: 'First task',
+      title: `First #${i}`,
       description: 'Testing a new task',
       dueDate: '20019/10/02',
     });
@@ -170,7 +170,6 @@ const displayProject = () => {
   });
 
   currentProject.node.style.display = 'block';
-  displayTodos();
 };
 
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
@@ -191,6 +190,7 @@ const createProject = (project) => {
   setCurrentProject(project);
   listProjectTitle();
   displayProject();
+  displayTodos();
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -207,6 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const project = findProject(e.target.parentElement.dataset.projectId);
       setCurrentProject(project);
       displayProject();
+    }
+
+    if (e.target && e.target.matches('button.remove-project')) {
+      projects = removeProject(e.target.parentElement.dataset.projectId);
+      console.log(projects);
     }
   });
 
