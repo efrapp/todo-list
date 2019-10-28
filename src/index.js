@@ -4,6 +4,7 @@ import Project from './project';
 const projects = [];
 
 const dummyProject = () => {
+  // eslint-disable-next-line prefer-object-spread
   const defaultProject = Project({ title: 'Default Project' });
 
   for (let i = 0; i < 5; i += 1) {

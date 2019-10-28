@@ -98,6 +98,7 @@ __webpack_require__.r(__webpack_exports__);
 const projects = [];
 
 const dummyProject = () => {
+  // eslint-disable-next-line prefer-object-spread
   const defaultProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: 'Default Project' });
 
   for (let i = 0; i < 5; i += 1) {
@@ -293,37 +294,108 @@ const Todo = (state) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _projectUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _projectLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+
+
+
 let id = -1;
 
 const Project = (state) => {
-  let { title } = state;
+  const { title } = state;
   const todos = [];
+  const protoUI = Object.getPrototypeOf(Object(_projectUI__WEBPACK_IMPORTED_MODULE_0__["default"])());
+  const protoLI = Object.getPrototypeOf(Object(_projectLI__WEBPACK_IMPORTED_MODULE_1__["default"])());
+  const proto = Object.assign(protoLI, protoUI);
 
   id += 1;
 
-  const getTitle = () => title;
+  return Object.assign(Object.create(proto), { id, title, todos });
+};
 
-  const setTitle = (t) => {
-    title = t || title;
-  };
+/* harmony default export */ __webpack_exports__["default"] = (Project);
 
-  const getTodos = () => todos;
 
-  const addTodo = (todo) => {
-    todos.push(todo);
-    return todo;
-  };
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-  const removeTodo = (name) => {
-    const todoIndex = todos.findIndex((todo) => todo.name === name);
-    return todos.splice(todoIndex, 1);
-  };
-
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const ProjectUI = () => {
   const proto = {
-    getTitle, setTitle, getTodos, addTodo, removeTodo,
+    create() {
+      const projectContainer = document.createElement('div');
+      const projectNode = document.getElementById('projects');
+      const projectTemplate = document.getElementById('project-template');
+      const projectContent = document.importNode(projectTemplate.content, true);
+
+      projectContainer.setAttribute('data-project-id', this.id);
+
+      projectContent.querySelector('.title').textContent = this.getTitle();
+      projectContainer.prepend(projectContent);
+      projectNode.appendChild(projectContainer);
+    },
+    show() {
+      const projectsContainer = document.getElementById('projects');
+
+      Array.prototype.forEach.call(projectsContainer.children, (pject) => {
+        const p = pject;
+        if (parseInt(p.dataset.projectId, 10) === this.id) {
+          p.style.display = 'none';
+        } else {
+          p.style.display = 'none';
+        }
+      });
+    },
+    createtitleLink() {
+      const projectsList = document.getElementById('projects-list');
+      const projectsListTemplate = document.getElementById('projects-list-template');
+      const projectsListContent = document.importNode(projectsListTemplate.content, true);
+      const projectActions = projectsListContent.querySelector('.project-actions');
+      const projectLink = projectsListContent.querySelector('.project-link');
+
+      projectLink.textContent = this.getTitle();
+      projectActions.setAttribute('data-project-id', this.id);
+
+      projectsList.appendChild(projectsListContent);
+    },
   };
 
-  return Object.assign(Object.create(proto), { id, title });
+  return Object.create(proto);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ProjectUI);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const Project = () => {
+  const proto = {
+    getTitle() {
+      return this.title;
+    },
+    setTitle(t) {
+      this.title = t || this.title;
+    },
+    getTodos() {
+      return this.todos;
+    },
+    addTodo(todo) {
+      this.todos.push(todo);
+      return todo;
+    },
+    removeTodo(id) {
+      const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
+      return this.todos.splice(todoIndex, 1);
+    },
+  };
+
+  return Object.create(proto);
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Project);

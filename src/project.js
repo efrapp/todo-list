@@ -1,34 +1,18 @@
+import ProjectUI from './projectUI';
+import ProjectLI from './projectLI';
+
 let id = -1;
 
 const Project = (state) => {
-  let { title } = state;
+  const { title } = state;
   const todos = [];
+  const protoUI = Object.getPrototypeOf(ProjectUI());
+  const protoLI = Object.getPrototypeOf(ProjectLI());
+  const proto = Object.assign(protoLI, protoUI);
 
   id += 1;
 
-  const getTitle = () => title;
-
-  const setTitle = (t) => {
-    title = t || title;
-  };
-
-  const getTodos = () => todos;
-
-  const addTodo = (todo) => {
-    todos.push(todo);
-    return todo;
-  };
-
-  const removeTodo = (name) => {
-    const todoIndex = todos.findIndex((todo) => todo.name === name);
-    return todos.splice(todoIndex, 1);
-  };
-
-  const proto = {
-    getTitle, setTitle, getTodos, addTodo, removeTodo,
-  };
-
-  return Object.assign(Object.create(proto), { id, title });
+  return Object.assign(Object.create(proto), { id, title, todos });
 };
 
 export default Project;
