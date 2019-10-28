@@ -2,7 +2,6 @@ import Todo from './todo';
 import Project from './project';
 
 const projects = [];
-const currentProject = {};
 
 const dummyProject = () => {
   const defaultProject = Project({ title: 'Default Project' });
@@ -26,13 +25,6 @@ const findProjectNode = (project) => {
     (p) => parseInt(p.dataset.projectId, 10) === project.id);
 };
 
-const setCurrentProject = (p) => {
-  currentProject.node = findProjectNode(p);
-  currentProject.obj = p;
-
-  return currentProject;
-};
-
 const createTodoNode = (todo) => {
   const todoTemplate = document.getElementById('todo-template');
   const todoContent = document.importNode(todoTemplate.content, true);
@@ -46,28 +38,28 @@ const createTodoNode = (todo) => {
   return todoContent;
 };
 
-const displayTodos = () => {
-  currentProject.obj.getTodos().forEach((todo) => {
+const displayTodos = (project) => {
+  project.getTodos().forEach((todo) => {
     const todoNode = createTodoNode(todo);
-    currentProject.node.querySelector('.content').appendChild(todoNode);
+    findProjectNode(project).querySelector('.content').appendChild(todoNode);
   });
 };
 
 // Add project title to the list project in the sidebar
-const listProjectTitle = () => {
+const listProjectTitle = (project) => {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');
   const projectsListContent = document.importNode(projectsListTemplate.content, true);
   const projectActions = projectsListContent.querySelector('.project-actions');
   const projectLink = projectsListContent.querySelector('.project-link');
 
-  projectLink.textContent = currentProject.obj.getTitle();
-  projectActions.setAttribute('data-project-id', currentProject.obj.id);
+  projectLink.textContent = project.getTitle();
+  projectActions.setAttribute('data-project-id', project.id);
 
   projectsList.appendChild(projectsListContent);
 };
 
-const displayProject = () => {
+const displayProject = (project) => {
   const projectsContainer = document.getElementById('projects');
 
   Array.prototype.forEach.call(projectsContainer.children, (pject) => {
@@ -75,7 +67,7 @@ const displayProject = () => {
     p.style.display = 'none';
   });
 
-  currentProject.node.style.display = 'block';
+  findProjectNode(project).style.display = 'block';
 };
 
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
@@ -93,9 +85,8 @@ const createProject = (project) => {
   projectNode.appendChild(projectContainer);
 
   projects.push(project);
-  setCurrentProject(project);
-  listProjectTitle();
-  displayProject();
+  listProjectTitle(project);
+  displayProject(project);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -110,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
   projectsList.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
-      setCurrentProject(project);
-      displayProject();
+      displayProject(project);
+      displayTodos(project);
     }
   });
 
@@ -130,12 +121,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = button.parentElement.querySelector('.todo-description-field').value;
       const dueDate = button.parentElement.querySelector('.todo-due-date-field').value;
       const priority = button.parentElement.querySelector('.todo-priority-field').value;
+      const projectUI = button.parentElement.parentElement;
+      const project = findProject(button.parentElement.parentElement.dataset.projectId);
       const todo = Todo({
         title, description, dueDate, priority,
       });
 
-      currentProject.obj.addTodo(todo);
-      currentProject.node.querySelector('.content')
+      project.addTodo(todo);
+      projectUI.querySelector('.content')
         .appendChild(createTodoNode(todo));
     }
   });
