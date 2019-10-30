@@ -1,11 +1,11 @@
-let id = -1;
+import Indexer from './idGenerator';
+
+const id = Indexer(0);
 
 const Todo = (state) => {
   let {
     title, description, dueDate, priority,
   } = state;
-
-  id += 1;
 
   const getTitle = () => title;
 
@@ -43,7 +43,7 @@ const Todo = (state) => {
   };
 
   return Object.assign(Object.create(proto), {
-    id, title, description, dueDate, priority,
+    id: id.next().value, title, description, dueDate, priority,
   });
 };
 

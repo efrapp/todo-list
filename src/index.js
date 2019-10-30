@@ -19,6 +19,8 @@ const dummyProject = () => {
     defaultProject.addTodo(todo);
   }
 
+  projects.push(defaultProject);
+
   return defaultProject;
 };
 
@@ -119,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createProjectBtn.addEventListener('click', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Project({ title: projectNameInput.value });
-
+    console.log(newProject);
     createProject(newProject);
   });
 

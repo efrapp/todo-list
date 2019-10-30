@@ -113,6 +113,8 @@ const dummyProject = () => {
     defaultProject.addTodo(todo);
   }
 
+  projects.push(defaultProject);
+
   return defaultProject;
 };
 
@@ -213,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createProjectBtn.addEventListener('click', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: projectNameInput.value });
-
+    console.log(newProject);
     createProject(newProject);
   });
 
@@ -244,14 +246,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-let id = -1;
+/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+
+
+const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(0);
 
 const Todo = (state) => {
   let {
     title, description, dueDate, priority,
   } = state;
-
-  id += 1;
 
   const getTitle = () => title;
 
@@ -289,7 +292,7 @@ const Todo = (state) => {
   };
 
   return Object.assign(Object.create(proto), {
-    id, title, description, dueDate, priority,
+    id: id.next().value, title, description, dueDate, priority,
   });
 };
 
@@ -304,20 +307,20 @@ const Todo = (state) => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _projectUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
 /* harmony import */ var _projectLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
+/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 
 
 
-let id = -1;
+
+const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
 const Project = (state) => {
   const { title } = state;
   const todos = [];
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype);
-  console.log(proto);
-  id += 1;
 
-  return Object.assign(Object.create(proto), { id, title, todos });
+  return Object.assign(Object.create(proto), { id: id.next().value, title, todos });
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Project);
@@ -411,6 +414,23 @@ ProjectLI.prototype.removeTodo = function removeTodo(id) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ProjectLI);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return indexer; });
+function* indexer(i) {
+  let index = i;
+
+  while (true) {
+    yield index;
+    index += 1;
+  }
+}
 
 
 /***/ })
