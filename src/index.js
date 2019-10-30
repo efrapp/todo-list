@@ -6,6 +6,9 @@ const projects = [];
 const dummyProject = () => {
   // eslint-disable-next-line prefer-object-spread
   const defaultProject = Project({ title: 'Default Project' });
+  console.log(defaultProject);
+  defaultProject.create();
+  defaultProject.createTitleLink();
 
   for (let i = 0; i < 5; i += 1) {
     const todo = Todo({
@@ -91,12 +94,12 @@ const createProject = (project) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const defaultProject = dummyProject();
   const projectsList = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
   const projectsNode = document.getElementById('projects');
 
-  createProject(defaultProject);
+  dummyProject();
+  // createProject(defaultProject);
 
   // Show selected project
   projectsList.addEventListener('click', (e) => {
@@ -104,6 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const project = findProject(e.target.parentElement.dataset.projectId);
       displayProject(project);
       displayTodos(project);
+    }
+
+    if (e.target && e.target.matches('button.remove-project')) {
+      projects = removeProject(e.target.parentElement.dataset.projectId);
+      console.log(projects);
     }
   });
 

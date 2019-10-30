@@ -1,25 +1,21 @@
-const Project = () => {
-  const proto = {
-    getTitle() {
-      return this.title;
-    },
-    setTitle(t) {
-      this.title = t || this.title;
-    },
-    getTodos() {
-      return this.todos;
-    },
-    addTodo(todo) {
-      this.todos.push(todo);
-      return todo;
-    },
-    removeTodo(id) {
-      const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
-      return this.todos.splice(todoIndex, 1);
-    },
-  };
+function ProjectLI() {}
 
-  return Object.create(proto);
+ProjectLI.prototype.getTitle = function getTitle() { return this.title; };
+
+ProjectLI.prototype.setTitle = function setTitle(t) {
+  this.title = t || this.title;
 };
 
-export default Project;
+ProjectLI.prototype.getTodos = function getTodos() { return this.todos; };
+
+ProjectLI.prototype.addTodo = function addTodo(todo) {
+  this.todos.push(todo);
+  return todo;
+};
+
+ProjectLI.prototype.removeTodo = function removeTodo(id) {
+  const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
+  return this.todos.splice(todoIndex, 1);
+};
+
+export default ProjectLI;

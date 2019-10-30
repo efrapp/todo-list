@@ -6,10 +6,9 @@ let id = -1;
 const Project = (state) => {
   const { title } = state;
   const todos = [];
-  const protoUI = Object.getPrototypeOf(ProjectUI());
-  const protoLI = Object.getPrototypeOf(ProjectLI());
-  const proto = Object.assign(protoLI, protoUI);
-
+  // eslint-disable-next-line prefer-object-spread
+  const proto = Object.assign({}, ProjectUI.prototype, ProjectLI.prototype);
+  console.log(proto);
   id += 1;
 
   return Object.assign(Object.create(proto), { id, title, todos });

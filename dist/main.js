@@ -100,6 +100,9 @@ const projects = [];
 const dummyProject = () => {
   // eslint-disable-next-line prefer-object-spread
   const defaultProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: 'Default Project' });
+  console.log(defaultProject);
+  defaultProject.create();
+  defaultProject.createTitleLink();
 
   for (let i = 0; i < 5; i += 1) {
     const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
@@ -185,12 +188,12 @@ const createProject = (project) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const defaultProject = dummyProject();
   const projectsList = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
   const projectsNode = document.getElementById('projects');
 
-  createProject(defaultProject);
+  dummyProject();
+  // createProject(defaultProject);
 
   // Show selected project
   projectsList.addEventListener('click', (e) => {
@@ -198,6 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const project = findProject(e.target.parentElement.dataset.projectId);
       displayProject(project);
       displayTodos(project);
+    }
+
+    if (e.target && e.target.matches('button.remove-project')) {
+      projects = removeProject(e.target.parentElement.dataset.projectId);
+      console.log(projects);
     }
   });
 
@@ -304,10 +312,9 @@ let id = -1;
 const Project = (state) => {
   const { title } = state;
   const todos = [];
-  const protoUI = Object.getPrototypeOf(Object(_projectUI__WEBPACK_IMPORTED_MODULE_0__["default"])());
-  const protoLI = Object.getPrototypeOf(Object(_projectLI__WEBPACK_IMPORTED_MODULE_1__["default"])());
-  const proto = Object.assign(protoLI, protoUI);
-
+  // eslint-disable-next-line prefer-object-spread
+  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype);
+  console.log(proto);
   id += 1;
 
   return Object.assign(Object.create(proto), { id, title, todos });
@@ -322,47 +329,56 @@ const Project = (state) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const ProjectUI = () => {
-  const proto = {
-    create() {
-      const projectContainer = document.createElement('div');
-      const projectNode = document.getElementById('projects');
-      const projectTemplate = document.getElementById('project-template');
-      const projectContent = document.importNode(projectTemplate.content, true);
+function ProjectUI() {}
 
-      projectContainer.setAttribute('data-project-id', this.id);
+ProjectUI.prototype.create = function create() {
+  const projectContainer = document.createElement('div');
+  const projectNode = document.getElementById('projects');
+  const projectTemplate = document.getElementById('project-template');
+  const projectContent = document.importNode(projectTemplate.content, true);
 
-      projectContent.querySelector('.title').textContent = this.getTitle();
-      projectContainer.prepend(projectContent);
-      projectNode.appendChild(projectContainer);
-    },
-    show() {
-      const projectsContainer = document.getElementById('projects');
+  projectContainer.setAttribute('data-project-id', this.id);
 
-      Array.prototype.forEach.call(projectsContainer.children, (pject) => {
-        const p = pject;
-        if (parseInt(p.dataset.projectId, 10) === this.id) {
-          p.style.display = 'none';
-        } else {
-          p.style.display = 'none';
-        }
-      });
-    },
-    createtitleLink() {
-      const projectsList = document.getElementById('projects-list');
-      const projectsListTemplate = document.getElementById('projects-list-template');
-      const projectsListContent = document.importNode(projectsListTemplate.content, true);
-      const projectActions = projectsListContent.querySelector('.project-actions');
-      const projectLink = projectsListContent.querySelector('.project-link');
+  projectContent.querySelector('.title').textContent = this.getTitle();
+  projectContainer.prepend(projectContent);
+  projectNode.appendChild(projectContainer);
+};
 
-      projectLink.textContent = this.getTitle();
-      projectActions.setAttribute('data-project-id', this.id);
+ProjectUI.prototype.show = function show() {
+  const projectsContainer = document.getElementById('projects');
 
-      projectsList.appendChild(projectsListContent);
-    },
-  };
+  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
+    const p = pject;
+    if (parseInt(p.dataset.projectId, 10) === this.id) {
+      p.style.display = 'block';
+    } else {
+      p.style.display = 'none';
+    }
+  });
+};
 
-  return Object.create(proto);
+ProjectUI.prototype.createTitleLink = function createTitleLink() {
+  const projectsList = document.getElementById('projects-list');
+  const projectsListTemplate = document.getElementById('projects-list-template');
+  const projectsListContent = document.importNode(projectsListTemplate.content, true);
+  const projectActions = projectsListContent.querySelector('.project-actions');
+  const projectLink = projectsListContent.querySelector('.project-link');
+
+  projectLink.textContent = this.getTitle();
+  projectActions.setAttribute('data-project-id', this.id);
+
+  projectsList.appendChild(projectsListContent);
+};
+
+ProjectUI.prototype.addTodo = function addTodo(todo) {
+  const todoTemplate = document.getElementById('todo-template');
+  const todoContent = document.importNode(todoTemplate.content, true);
+
+  todoContent.querySelector('.todo').setAttribute('data-todo-id', todo.id);
+  todoContent.querySelector('.todo-title').textContent = todo.getTitle();
+  todoContent.querySelector('.todo-description').textContent = todo.getDescription();
+  todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
+  todoContent.querySelector('.todo-priority').textContent = todo.getPriority();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ProjectUI);
@@ -374,31 +390,27 @@ const ProjectUI = () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const Project = () => {
-  const proto = {
-    getTitle() {
-      return this.title;
-    },
-    setTitle(t) {
-      this.title = t || this.title;
-    },
-    getTodos() {
-      return this.todos;
-    },
-    addTodo(todo) {
-      this.todos.push(todo);
-      return todo;
-    },
-    removeTodo(id) {
-      const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
-      return this.todos.splice(todoIndex, 1);
-    },
-  };
+function ProjectLI() {}
 
-  return Object.create(proto);
+ProjectLI.prototype.getTitle = function getTitle() { return this.title; };
+
+ProjectLI.prototype.setTitle = function setTitle(t) {
+  this.title = t || this.title;
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Project);
+ProjectLI.prototype.getTodos = function getTodos() { return this.todos; };
+
+ProjectLI.prototype.addTodo = function addTodo(todo) {
+  this.todos.push(todo);
+  return todo;
+};
+
+ProjectLI.prototype.removeTodo = function removeTodo(id) {
+  const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
+  return this.todos.splice(todoIndex, 1);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ProjectLI);
 
 
 /***/ })
