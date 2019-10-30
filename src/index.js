@@ -6,9 +6,6 @@ const projects = [];
 const dummyProject = () => {
   // eslint-disable-next-line prefer-object-spread
   const defaultProject = Project({ title: 'Default Project' });
-  console.log(defaultProject);
-  defaultProject.create();
-  defaultProject.createTitleLink();
 
   for (let i = 0; i < 5; i += 1) {
     const todo = Todo({
@@ -51,49 +48,7 @@ const displayTodos = (project) => {
   });
 };
 
-// Add project title to the list project in the sidebar
-const listProjectTitle = (project) => {
-  const projectsList = document.getElementById('projects-list');
-  const projectsListTemplate = document.getElementById('projects-list-template');
-  const projectsListContent = document.importNode(projectsListTemplate.content, true);
-  const projectActions = projectsListContent.querySelector('.project-actions');
-  const projectLink = projectsListContent.querySelector('.project-link');
-
-  projectLink.textContent = project.getTitle();
-  projectActions.setAttribute('data-project-id', project.id);
-
-  projectsList.appendChild(projectsListContent);
-};
-
-const displayProject = (project) => {
-  const projectsContainer = document.getElementById('projects');
-
-  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
-    const p = pject;
-    p.style.display = 'none';
-  });
-
-  findProjectNode(project).style.display = 'block';
-};
-
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
-
-const createProject = (project) => {
-  const projectContainer = document.createElement('div');
-  const projectNode = document.getElementById('projects');
-  const projectTemplate = document.getElementById('project-template');
-  const projectContent = document.importNode(projectTemplate.content, true);
-
-  projectContainer.setAttribute('data-project-id', project.id);
-
-  projectContent.querySelector('.title').textContent = project.getTitle();
-  projectContainer.prepend(projectContent);
-  projectNode.appendChild(projectContainer);
-
-  projects.push(project);
-  listProjectTitle(project);
-  displayProject(project);
-};
 
 document.addEventListener('DOMContentLoaded', () => {
   const projectsList = document.getElementById('projects-list');
@@ -101,20 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const projectsNode = document.getElementById('projects');
 
   dummyProject();
-  // createProject(defaultProject);
 
   // Show selected project
   projectsList.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
-      displayProject(project);
+      project.show();
       displayTodos(project);
     }
 
-    if (e.target && e.target.matches('button.remove-project')) {
-      projects = removeProject(e.target.parentElement.dataset.projectId);
-      console.log(projects);
-    }
+    // if (e.target && e.target.matches('button.remove-project')) {
+    //   projects = removeProject(e.target.parentElement.dataset.projectId);
+    //   console.log(projects);
+    // }
   });
 
   // Create a project node
@@ -122,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Project({ title: projectNameInput.value });
     console.log(newProject);
-    createProject(newProject);
+    projects.push(newProject);
+    newProject.show();
   });
 
   projectsNode.addEventListener('click', (e) => {

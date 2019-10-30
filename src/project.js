@@ -9,8 +9,12 @@ const Project = (state) => {
   const todos = [];
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, ProjectUI.prototype, ProjectLI.prototype);
+  const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
 
-  return Object.assign(Object.create(proto), { id: id.next().value, title, todos });
+  obj.create();
+  obj.createTitleLink();
+
+  return obj;
 };
 
 export default Project;
