@@ -12,6 +12,10 @@ const Project = (state) => {
       ProjectUI.prototype.addTodo.call(this, todo);
       ProjectLI.prototype.addTodo.call(this, todo);
     },
+    remove() {
+      ProjectUI.prototype.removeTitleLink.call(this);
+      ProjectUI.prototype.removeContent.call(this);
+    },
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, ProjectUI.prototype, ProjectLI.prototype, customProto);

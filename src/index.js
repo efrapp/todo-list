@@ -11,7 +11,7 @@ const dummyProject = () => {
     const todo = Todo({
       title: `First #${i}`,
       description: 'Testing a new task',
-      dueDate: '20019/10/02',
+      dueDate: '2019/10/02',
     });
     defaultProject.addTodo(todo);
   }
@@ -22,6 +22,18 @@ const dummyProject = () => {
 };
 
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
+
+const removeProject = (id) => {
+  const project = findProject(id);
+  const index = projects.indexOf(project);
+
+  project.remove();
+  projects.splice(index, 1);
+
+  if (projects.length !== 0) {
+    projects[index - 1].show();
+  }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const projectsList = document.getElementById('projects-list');
@@ -37,10 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
       project.show();
     }
 
-    // if (e.target && e.target.matches('button.remove-project')) {
-    //   projects = removeProject(e.target.parentElement.dataset.projectId);
-    //   console.log(projects);
-    // }
+    if (e.target && e.target.matches('button.remove-project')) {
+      removeProject(e.target.parentElement.dataset.projectId);
+    }
   });
 
   // Create a project node

@@ -91,7 +91,7 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _todo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _project__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _project__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
 
 
 
@@ -105,7 +105,7 @@ const dummyProject = () => {
     const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
       title: `First #${i}`,
       description: 'Testing a new task',
-      dueDate: '20019/10/02',
+      dueDate: '2019/10/02',
     });
     defaultProject.addTodo(todo);
   }
@@ -116,6 +116,18 @@ const dummyProject = () => {
 };
 
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
+
+const removeProject = (id) => {
+  const project = findProject(id);
+  const index = projects.indexOf(project);
+
+  project.remove();
+  projects.splice(index, 1);
+
+  if (projects.length !== 0) {
+    projects[index - 1].show();
+  }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   const projectsList = document.getElementById('projects-list');
@@ -131,10 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
       project.show();
     }
 
-    // if (e.target && e.target.matches('button.remove-project')) {
-    //   projects = removeProject(e.target.parentElement.dataset.projectId);
-    //   console.log(projects);
-    // }
+    if (e.target && e.target.matches('button.remove-project')) {
+      removeProject(e.target.parentElement.dataset.projectId);
+    }
   });
 
   // Create a project node
@@ -170,9 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _todoUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-/* harmony import */ var _todoLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
-/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var _todoUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _todoLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
 
 
 
@@ -204,151 +215,6 @@ const Todo = (state) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _projectUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _projectLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-
-
-
-
-const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
-
-const Project = (state) => {
-  const { title } = state;
-  const todos = [];
-  const customProto = {
-    addTodo(todo) {
-      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addTodo.call(this, todo);
-      _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.addTodo.call(this, todo);
-    },
-  };
-  // eslint-disable-next-line prefer-object-spread
-  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, customProto);
-  const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
-
-  obj.create();
-  obj.createTitleLink();
-
-  return obj;
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (Project);
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function ProjectUI() {}
-
-ProjectUI.prototype.create = function create() {
-  const projectContainer = document.createElement('div');
-  const projectNode = document.getElementById('projects');
-  const projectTemplate = document.getElementById('project-template');
-  const projectContent = document.importNode(projectTemplate.content, true);
-
-  projectContainer.setAttribute('data-project-id', this.id);
-
-  projectContent.querySelector('.title').textContent = this.getTitle();
-  projectContainer.prepend(projectContent);
-  projectNode.appendChild(projectContainer);
-};
-
-ProjectUI.prototype.show = function show() {
-  const projectsContainer = document.getElementById('projects');
-
-  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
-    const p = pject;
-    if (parseInt(p.dataset.projectId, 10) === this.id) {
-      p.style.display = 'block';
-    } else {
-      p.style.display = 'none';
-    }
-  });
-};
-
-ProjectUI.prototype.find = function find() {
-  const projectsContainer = document.getElementById('projects');
-
-  return Array.prototype.find.call(projectsContainer.children,
-    (p) => parseInt(p.dataset.projectId, 10) === this.id);
-};
-
-ProjectUI.prototype.createTitleLink = function createTitleLink() {
-  const projectsList = document.getElementById('projects-list');
-  const projectsListTemplate = document.getElementById('projects-list-template');
-  const projectsListContent = document.importNode(projectsListTemplate.content, true);
-  const projectActions = projectsListContent.querySelector('.project-actions');
-  const projectLink = projectsListContent.querySelector('.project-link');
-
-  projectLink.textContent = this.getTitle();
-  projectActions.setAttribute('data-project-id', this.id);
-
-  projectsList.appendChild(projectsListContent);
-};
-
-ProjectUI.prototype.addTodo = function addTodo(todo) {
-  this.find()
-    .querySelector('.content').appendChild(todo.createView());
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (ProjectUI);
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function ProjectLI() {}
-
-ProjectLI.prototype.getTitle = function getTitle() { return this.title; };
-
-ProjectLI.prototype.setTitle = function setTitle(t) {
-  this.title = t || this.title;
-};
-
-ProjectLI.prototype.getTodos = function getTodos() { return this.todos; };
-
-ProjectLI.prototype.addTodo = function addTodo(todo) {
-  this.todos.push(todo);
-  return todo;
-};
-
-ProjectLI.prototype.removeTodo = function removeTodo(id) {
-  const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
-  return this.todos.splice(todoIndex, 1);
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (ProjectLI);
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return indexer; });
-function* indexer(i) {
-  let index = i;
-
-  while (true) {
-    yield index;
-    index += 1;
-  }
-}
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 function TodoUI() {}
 
 TodoUI.prototype.createView = function createView() {
@@ -368,7 +234,7 @@ TodoUI.prototype.createView = function createView() {
 
 
 /***/ }),
-/* 7 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -408,6 +274,170 @@ TodoLI.prototype.setPriority = function setPriority(p) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (TodoLI);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return indexer; });
+function* indexer(i) {
+  let index = i;
+
+  while (true) {
+    yield index;
+    index += 1;
+  }
+}
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _projectUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var _projectLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+
+
+
+
+const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
+
+const Project = (state) => {
+  const { title } = state;
+  const todos = [];
+  const customProto = {
+    addTodo(todo) {
+      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addTodo.call(this, todo);
+      _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.addTodo.call(this, todo);
+    },
+    remove() {
+      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeTitleLink.call(this);
+      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeContent.call(this);
+    },
+  };
+  // eslint-disable-next-line prefer-object-spread
+  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, customProto);
+  const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
+
+  obj.create();
+  obj.createTitleLink();
+
+  return obj;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Project);
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function ProjectUI() {}
+
+const getContainer = () => document.getElementById('projects');
+
+ProjectUI.prototype.create = function create() {
+  const projectContainer = document.createElement('div');
+  const projectNode = getContainer();
+  const projectTemplate = document.getElementById('project-template');
+  const projectContent = document.importNode(projectTemplate.content, true);
+
+  projectContainer.setAttribute('data-project-id', this.id);
+
+  projectContent.querySelector('.title').textContent = this.getTitle();
+  projectContainer.prepend(projectContent);
+  projectNode.appendChild(projectContainer);
+};
+
+ProjectUI.prototype.show = function show() {
+  const projectsContainer = getContainer();
+
+  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
+    const p = pject;
+    if (parseInt(p.dataset.projectId, 10) === this.id) {
+      p.style.display = 'block';
+    } else {
+      p.style.display = 'none';
+    }
+  });
+};
+
+ProjectUI.prototype.find = function find(el) {
+  return Array.prototype.find.call(el,
+    (p) => parseInt(p.dataset.projectId, 10) === this.id);
+};
+
+ProjectUI.prototype.createTitleLink = function createTitleLink() {
+  const projectsList = document.getElementById('projects-list');
+  const projectsListTemplate = document.getElementById('projects-list-template');
+  const projectsListContent = document.importNode(projectsListTemplate.content, true);
+  const projectActions = projectsListContent.querySelector('.project-actions');
+  const projectLink = projectsListContent.querySelector('.project-link');
+
+  projectLink.textContent = this.getTitle();
+  projectActions.setAttribute('data-project-id', this.id);
+
+  projectsList.appendChild(projectsListContent);
+};
+
+ProjectUI.prototype.addTodo = function addTodo(todo) {
+  const projectsContainer = getContainer();
+  this.find(projectsContainer.children)
+    .querySelector('.content').appendChild(todo.createView());
+};
+
+ProjectUI.prototype.removeTitleLink = function removeTitleLink() {
+  const titleLinks = document.querySelectorAll('.project-actions');
+  const titleLink = this.find(titleLinks);
+
+  titleLink.remove();
+};
+
+ProjectUI.prototype.removeContent = function removeContent() {
+  const projectsContainer = getContainer();
+  const content = this.find(projectsContainer.children);
+
+  content.remove();
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ProjectUI);
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function ProjectLI() {}
+
+ProjectLI.prototype.getTitle = function getTitle() { return this.title; };
+
+ProjectLI.prototype.setTitle = function setTitle(t) {
+  this.title = t || this.title;
+};
+
+ProjectLI.prototype.getTodos = function getTodos() { return this.todos; };
+
+ProjectLI.prototype.addTodo = function addTodo(todo) {
+  this.todos.push(todo);
+  return todo;
+};
+
+ProjectLI.prototype.removeTodo = function removeTodo(id) {
+  const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
+  return this.todos.splice(todoIndex, 1);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ProjectLI);
 
 
 /***/ })

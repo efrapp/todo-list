@@ -1,8 +1,10 @@
 function ProjectUI() {}
 
+const getContainer = () => document.getElementById('projects');
+
 ProjectUI.prototype.create = function create() {
   const projectContainer = document.createElement('div');
-  const projectNode = document.getElementById('projects');
+  const projectNode = getContainer();
   const projectTemplate = document.getElementById('project-template');
   const projectContent = document.importNode(projectTemplate.content, true);
 
@@ -14,7 +16,7 @@ ProjectUI.prototype.create = function create() {
 };
 
 ProjectUI.prototype.show = function show() {
-  const projectsContainer = document.getElementById('projects');
+  const projectsContainer = getContainer();
 
   Array.prototype.forEach.call(projectsContainer.children, (pject) => {
     const p = pject;
@@ -26,10 +28,8 @@ ProjectUI.prototype.show = function show() {
   });
 };
 
-ProjectUI.prototype.find = function find() {
-  const projectsContainer = document.getElementById('projects');
-
-  return Array.prototype.find.call(projectsContainer.children,
+ProjectUI.prototype.find = function find(el) {
+  return Array.prototype.find.call(el,
     (p) => parseInt(p.dataset.projectId, 10) === this.id);
 };
 
@@ -47,8 +47,23 @@ ProjectUI.prototype.createTitleLink = function createTitleLink() {
 };
 
 ProjectUI.prototype.addTodo = function addTodo(todo) {
-  this.find()
+  const projectsContainer = getContainer();
+  this.find(projectsContainer.children)
     .querySelector('.content').appendChild(todo.createView());
+};
+
+ProjectUI.prototype.removeTitleLink = function removeTitleLink() {
+  const titleLinks = document.querySelectorAll('.project-actions');
+  const titleLink = this.find(titleLinks);
+
+  titleLink.remove();
+};
+
+ProjectUI.prototype.removeContent = function removeContent() {
+  const projectsContainer = getContainer();
+  const content = this.find(projectsContainer.children);
+
+  content.remove();
 };
 
 export default ProjectUI;
