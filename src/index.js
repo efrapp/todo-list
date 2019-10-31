@@ -21,33 +21,6 @@ const dummyProject = () => {
   return defaultProject;
 };
 
-const findProjectNode = (project) => {
-  const projectsContainer = document.getElementById('projects');
-
-  return Array.prototype.find.call(projectsContainer.children,
-    (p) => parseInt(p.dataset.projectId, 10) === project.id);
-};
-
-const createTodoNode = (todo) => {
-  const todoTemplate = document.getElementById('todo-template');
-  const todoContent = document.importNode(todoTemplate.content, true);
-
-  todoContent.querySelector('.todo').setAttribute('data-todo-id', todo.id);
-  todoContent.querySelector('.todo-title').textContent = todo.getTitle();
-  todoContent.querySelector('.todo-description').textContent = todo.getDescription();
-  todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
-  todoContent.querySelector('.todo-priority').textContent = todo.getPriority();
-
-  return todoContent;
-};
-
-const displayTodos = (project) => {
-  project.getTodos().forEach((todo) => {
-    const todoNode = createTodoNode(todo);
-    findProjectNode(project).querySelector('.content').appendChild(todoNode);
-  });
-};
-
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -62,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
       project.show();
-      displayTodos(project);
     }
 
     // if (e.target && e.target.matches('button.remove-project')) {
@@ -75,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createProjectBtn.addEventListener('click', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Project({ title: projectNameInput.value });
-    console.log(newProject);
+
     projects.push(newProject);
     newProject.show();
   });
@@ -87,15 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = button.parentElement.querySelector('.todo-description-field').value;
       const dueDate = button.parentElement.querySelector('.todo-due-date-field').value;
       const priority = button.parentElement.querySelector('.todo-priority-field').value;
-      const projectUI = button.parentElement.parentElement;
       const project = findProject(button.parentElement.parentElement.dataset.projectId);
       const todo = Todo({
         title, description, dueDate, priority,
       });
 
       project.addTodo(todo);
-      projectUI.querySelector('.content')
-        .appendChild(createTodoNode(todo));
     }
   });
 });

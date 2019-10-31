@@ -115,33 +115,6 @@ const dummyProject = () => {
   return defaultProject;
 };
 
-const findProjectNode = (project) => {
-  const projectsContainer = document.getElementById('projects');
-
-  return Array.prototype.find.call(projectsContainer.children,
-    (p) => parseInt(p.dataset.projectId, 10) === project.id);
-};
-
-const createTodoNode = (todo) => {
-  const todoTemplate = document.getElementById('todo-template');
-  const todoContent = document.importNode(todoTemplate.content, true);
-
-  todoContent.querySelector('.todo').setAttribute('data-todo-id', todo.id);
-  todoContent.querySelector('.todo-title').textContent = todo.getTitle();
-  todoContent.querySelector('.todo-description').textContent = todo.getDescription();
-  todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
-  todoContent.querySelector('.todo-priority').textContent = todo.getPriority();
-
-  return todoContent;
-};
-
-const displayTodos = (project) => {
-  project.getTodos().forEach((todo) => {
-    const todoNode = createTodoNode(todo);
-    findProjectNode(project).querySelector('.content').appendChild(todoNode);
-  });
-};
-
 const findProject = (id) => projects.find((project) => project.id === parseInt(id, 10));
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -156,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
       project.show();
-      displayTodos(project);
     }
 
     // if (e.target && e.target.matches('button.remove-project')) {
@@ -169,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
   createProjectBtn.addEventListener('click', () => {
     const projectNameInput = document.getElementById('project-name');
     const newProject = Object(_project__WEBPACK_IMPORTED_MODULE_1__["default"])({ title: projectNameInput.value });
-    console.log(newProject);
+
     projects.push(newProject);
     newProject.show();
   });
@@ -181,15 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = button.parentElement.querySelector('.todo-description-field').value;
       const dueDate = button.parentElement.querySelector('.todo-due-date-field').value;
       const priority = button.parentElement.querySelector('.todo-priority-field').value;
-      const projectUI = button.parentElement.parentElement;
       const project = findProject(button.parentElement.parentElement.dataset.projectId);
       const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
         title, description, dueDate, priority,
       });
 
       project.addTodo(todo);
-      projectUI.querySelector('.content')
-        .appendChild(createTodoNode(todo));
     }
   });
 });
@@ -201,54 +170,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
+/* harmony import */ var _todoUI__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var _todoLI__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _idGenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 
 
-const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(0);
+
+
+const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
 const Todo = (state) => {
-  let {
+  const {
     title, description, dueDate, priority,
   } = state;
 
-  const getTitle = () => title;
-
-  const setTitle = (t) => {
-    title = t || title;
-  };
-
-  const getDescription = () => description;
-
-  const setDescription = (d) => {
-    description = d || description;
-  };
-
-  const getDueDate = () => dueDate;
-
-  const setDueDate = (dd) => {
-    dueDate = dd || dueDate;
-  };
-
-  const getPriority = () => priority;
-
-  const setPriority = (p) => {
-    priority = p || priority;
-  };
-
-  const proto = {
-    getTitle,
-    setTitle,
-    getDescription,
-    setDescription,
-    getDueDate,
-    setDueDate,
-    getPriority,
-    setPriority,
-  };
-
-  return Object.assign(Object.create(proto), {
+  // eslint-disable-next-line prefer-object-spread
+  const proto = Object.assign({}, _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype);
+  const obj = Object.assign(Object.create(proto), {
     id: id.next().value, title, description, dueDate, priority,
   });
+
+  obj.createView();
+
+  return obj;
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Todo);
@@ -272,8 +216,14 @@ const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 const Project = (state) => {
   const { title } = state;
   const todos = [];
+  const customProto = {
+    addTodo(todo) {
+      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addTodo.call(this, todo);
+      _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.addTodo.call(this, todo);
+    },
+  };
   // eslint-disable-next-line prefer-object-spread
-  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype);
+  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, customProto);
   const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
 
   obj.create();
@@ -319,6 +269,13 @@ ProjectUI.prototype.show = function show() {
   });
 };
 
+ProjectUI.prototype.find = function find() {
+  const projectsContainer = document.getElementById('projects');
+
+  return Array.prototype.find.call(projectsContainer.children,
+    (p) => parseInt(p.dataset.projectId, 10) === this.id);
+};
+
 ProjectUI.prototype.createTitleLink = function createTitleLink() {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');
@@ -333,14 +290,8 @@ ProjectUI.prototype.createTitleLink = function createTitleLink() {
 };
 
 ProjectUI.prototype.addTodo = function addTodo(todo) {
-  const todoTemplate = document.getElementById('todo-template');
-  const todoContent = document.importNode(todoTemplate.content, true);
-
-  todoContent.querySelector('.todo').setAttribute('data-todo-id', todo.id);
-  todoContent.querySelector('.todo-title').textContent = todo.getTitle();
-  todoContent.querySelector('.todo-description').textContent = todo.getDescription();
-  todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
-  todoContent.querySelector('.todo-priority').textContent = todo.getPriority();
+  this.find()
+    .querySelector('.content').appendChild(todo.createView());
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ProjectUI);
@@ -390,6 +341,73 @@ function* indexer(i) {
     index += 1;
   }
 }
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function TodoUI() {}
+
+TodoUI.prototype.createView = function createView() {
+  const todoTemplate = document.getElementById('todo-template');
+  const todoContent = document.importNode(todoTemplate.content, true);
+
+  todoContent.querySelector('.todo').setAttribute('data-todo-id', this.id);
+  todoContent.querySelector('.todo-title').textContent = this.getTitle();
+  todoContent.querySelector('.todo-description').textContent = this.getDescription();
+  todoContent.querySelector('.todo-due-date').textContent = this.getDueDate();
+  todoContent.querySelector('.todo-priority').textContent = this.getPriority();
+
+  return todoContent;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (TodoUI);
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function TodoLI() {}
+
+TodoLI.prototype.getTitle = function getTitle() {
+  return this.title;
+};
+
+TodoLI.prototype.setTitle = function setTitle(t) {
+  this.title = t || this.title;
+};
+
+TodoLI.prototype.getDescription = function getDescription() {
+  return this.description;
+};
+
+TodoLI.prototype.setDescription = function setDescription(d) {
+  this.description = d || this.description;
+};
+
+TodoLI.prototype.getDueDate = function getDueDate() {
+  return this.dueDate;
+};
+
+TodoLI.prototype.setDueDate = function setDueDate(dd) {
+  this.dueDate = dd || this.dueDate;
+};
+
+TodoLI.prototype.getPriority = function getPriority() {
+  return this.priority;
+};
+
+TodoLI.prototype.setPriority = function setPriority(p) {
+  this.priority = p || this.priority;
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (TodoLI);
 
 
 /***/ })

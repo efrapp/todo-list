@@ -26,6 +26,13 @@ ProjectUI.prototype.show = function show() {
   });
 };
 
+ProjectUI.prototype.find = function find() {
+  const projectsContainer = document.getElementById('projects');
+
+  return Array.prototype.find.call(projectsContainer.children,
+    (p) => parseInt(p.dataset.projectId, 10) === this.id);
+};
+
 ProjectUI.prototype.createTitleLink = function createTitleLink() {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');
@@ -40,14 +47,8 @@ ProjectUI.prototype.createTitleLink = function createTitleLink() {
 };
 
 ProjectUI.prototype.addTodo = function addTodo(todo) {
-  const todoTemplate = document.getElementById('todo-template');
-  const todoContent = document.importNode(todoTemplate.content, true);
-
-  todoContent.querySelector('.todo').setAttribute('data-todo-id', todo.id);
-  todoContent.querySelector('.todo-title').textContent = todo.getTitle();
-  todoContent.querySelector('.todo-description').textContent = todo.getDescription();
-  todoContent.querySelector('.todo-due-date').textContent = todo.getDueDate();
-  todoContent.querySelector('.todo-priority').textContent = todo.getPriority();
+  this.find()
+    .querySelector('.content').appendChild(todo.createView());
 };
 
 export default ProjectUI;
