@@ -129,15 +129,26 @@ const removeProject = (id) => {
   }
 };
 
+const showEditModal = (id) => {
+  const editProjectModal = document.getElementById('edit-project');
+  const projectNameField = editProjectModal.querySelector('#project-name');
+  const project = findProject(id);
+
+  projectNameField.value = project.getTitle();
+  projectNameField.setAttribute('data-project-id', project.id);
+  // then show the modal with bootstrap
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  const projectsList = document.getElementById('projects-list');
+  const projectActions = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
+  const updateProjectBtn = document.getElementById('update-project-btn');
   const projectsNode = document.getElementById('projects');
 
   dummyProject();
 
   // Show selected project
-  projectsList.addEventListener('click', (e) => {
+  projectActions.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
       project.show();
@@ -145,6 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (e.target && e.target.matches('button.remove-project')) {
       removeProject(e.target.parentElement.dataset.projectId);
+    }
+
+    if (e.target && e.target.matches('button.edit-project-btn')) {
+      showEditModal(e.target.parentElement.dataset.projectId);
     }
   });
 
@@ -171,6 +186,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       project.addTodo(todo);
     }
+  });
+
+  updateProjectBtn.addEventListener('click', (e) => {
+    const updateProjectModal = e.target.parentElement;
+    const updateProjectField = updateProjectModal.querySelector('#project-name');
+    const newTitle = updateProjectField.value;
+    const project = findProject(updateProjectField.dataset.projectId);
+
+    project.update({ newTitle });
   });
 });
 
@@ -311,7 +335,7 @@ const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 const Project = (state) => {
   const { title } = state;
   const todos = [];
-  const customProto = {
+  const publicProto = {
     addTodo(todo) {
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addTodo.call(this, todo);
       _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.addTodo.call(this, todo);
@@ -320,9 +344,15 @@ const Project = (state) => {
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeTitleLink.call(this);
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeContent.call(this);
     },
+    update(stateEdit) {
+      const { newTitle } = stateEdit;
+      _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setTitle.call(this, newTitle);
+      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.updateTitleLink.call(this, newTitle);
+      _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.updateContentTitle.call(this, newTitle);
+    },
   };
   // eslint-disable-next-line prefer-object-spread
-  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, customProto);
+  const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, publicProto);
   const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
 
   obj.create();
@@ -406,6 +436,20 @@ ProjectUI.prototype.removeContent = function removeContent() {
   const content = this.find(projectsContainer.children);
 
   content.remove();
+};
+
+ProjectUI.prototype.updateTitleLink = function updateTitleLink(newTitle) {
+  const actionsContainer = document.getElementById('projects-list');
+  const titleLink = this.find(actionsContainer.children).querySelector('a.project-link');
+
+  titleLink.textContent = newTitle;
+};
+
+ProjectUI.prototype.updateContentTitle = function updateContentTitle(newTitle) {
+  const projectContainer = this.find(getContainer().children);
+  const projectTitle = projectContainer.querySelector('h1.title');
+
+  projectTitle.textContent = newTitle;
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ProjectUI);

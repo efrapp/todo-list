@@ -35,15 +35,26 @@ const removeProject = (id) => {
   }
 };
 
+const showEditModal = (id) => {
+  const editProjectModal = document.getElementById('edit-project');
+  const projectNameField = editProjectModal.querySelector('#project-name');
+  const project = findProject(id);
+
+  projectNameField.value = project.getTitle();
+  projectNameField.setAttribute('data-project-id', project.id);
+  // then show the modal with bootstrap
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  const projectsList = document.getElementById('projects-list');
+  const projectActions = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
+  const updateProjectBtn = document.getElementById('update-project-btn');
   const projectsNode = document.getElementById('projects');
 
   dummyProject();
 
   // Show selected project
-  projectsList.addEventListener('click', (e) => {
+  projectActions.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
       project.show();
@@ -51,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (e.target && e.target.matches('button.remove-project')) {
       removeProject(e.target.parentElement.dataset.projectId);
+    }
+
+    if (e.target && e.target.matches('button.edit-project-btn')) {
+      showEditModal(e.target.parentElement.dataset.projectId);
     }
   });
 
@@ -77,5 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       project.addTodo(todo);
     }
+  });
+
+  updateProjectBtn.addEventListener('click', (e) => {
+    const updateProjectModal = e.target.parentElement;
+    const updateProjectField = updateProjectModal.querySelector('#project-name');
+    const newTitle = updateProjectField.value;
+    const project = findProject(updateProjectField.dataset.projectId);
+
+    project.update({ newTitle });
   });
 });

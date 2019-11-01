@@ -24,6 +24,12 @@
         <input type="text" name="project[name]" id="project-name">
         <button id="create-project"> Create new project </button>
       </div>
+      <div id="edit-project">
+        <h2> Edit Project </h2>
+        <label for="project-name"> Name: </label>
+        <input type="text" name="project[name]" id="project-name">
+        <button id="update-project-btn"> Update project </button>
+      </div>
     </div>
 
     <!-- Templates -->
@@ -62,7 +68,8 @@
     <template id="projects-list-template">
       <li class="project-actions">
         <a href="#" class="project-link"> </a>
-        <button class="remove-project"> Remove project </button>
+        <button class="remove-project"> Remove </button>
+        <button class="edit-project-btn"> Edit </button>
       </li>
     </template>
   </body>

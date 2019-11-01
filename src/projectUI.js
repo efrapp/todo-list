@@ -66,4 +66,18 @@ ProjectUI.prototype.removeContent = function removeContent() {
   content.remove();
 };
 
+ProjectUI.prototype.updateTitleLink = function updateTitleLink(newTitle) {
+  const actionsContainer = document.getElementById('projects-list');
+  const titleLink = this.find(actionsContainer.children).querySelector('a.project-link');
+
+  titleLink.textContent = newTitle;
+};
+
+ProjectUI.prototype.updateContentTitle = function updateContentTitle(newTitle) {
+  const projectContainer = this.find(getContainer().children);
+  const projectTitle = projectContainer.querySelector('h1.title');
+
+  projectTitle.textContent = newTitle;
+};
+
 export default ProjectUI;
