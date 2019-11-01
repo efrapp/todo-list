@@ -400,8 +400,8 @@ ProjectUI.prototype.show = function show() {
   });
 };
 
-ProjectUI.prototype.find = function find(el) {
-  return Array.prototype.find.call(el,
+ProjectUI.prototype.findElement = function findElement(elements) {
+  return Array.prototype.find.call(elements,
     (p) => parseInt(p.dataset.projectId, 10) === this.id);
 };
 
@@ -420,33 +420,33 @@ ProjectUI.prototype.createTitleLink = function createTitleLink() {
 
 ProjectUI.prototype.addTodo = function addTodo(todo) {
   const projectsContainer = getContainer();
-  this.find(projectsContainer.children)
+  this.findElement(projectsContainer.children)
     .querySelector('.content').appendChild(todo.createView());
 };
 
 ProjectUI.prototype.removeTitleLink = function removeTitleLink() {
   const titleLinks = document.querySelectorAll('.project-actions');
-  const titleLink = this.find(titleLinks);
+  const titleLink = this.findElement(titleLinks);
 
   titleLink.remove();
 };
 
 ProjectUI.prototype.removeContent = function removeContent() {
   const projectsContainer = getContainer();
-  const content = this.find(projectsContainer.children);
+  const content = this.findElement(projectsContainer.children);
 
   content.remove();
 };
 
 ProjectUI.prototype.updateTitleLink = function updateTitleLink(newTitle) {
   const actionsContainer = document.getElementById('projects-list');
-  const titleLink = this.find(actionsContainer.children).querySelector('a.project-link');
+  const titleLink = this.findElement(actionsContainer.children).querySelector('a.project-link');
 
   titleLink.textContent = newTitle;
 };
 
 ProjectUI.prototype.updateContentTitle = function updateContentTitle(newTitle) {
-  const projectContainer = this.find(getContainer().children);
+  const projectContainer = this.findElement(getContainer().children);
   const projectTitle = projectContainer.querySelector('h1.title');
 
   projectTitle.textContent = newTitle;
