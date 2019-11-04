@@ -24,9 +24,14 @@ TodoUI.prototype.findElement = function findElement(elements) {
     t => parseInt(t.dataset.todoId, 10) === this.id);
 };
 
-TodoUI.prototype.remove = function remove() {
+TodoUI.prototype.getElement = function getElement() {
   const todoEls = this.getProjectContainer().children;
   const todoEl = this.findElement(todoEls);
+  return todoEl;
+};
+
+TodoUI.prototype.remove = function remove() {
+  const todoEl = this.getElement();
 
   todoEl.remove();
 };

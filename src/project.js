@@ -21,6 +21,9 @@ const Project = (state) => {
       ProjectUI.prototype.updateTitleLink.call(this, newTitle);
       ProjectUI.prototype.updateContentTitle.call(this, newTitle);
     },
+    getElement() {
+      return ProjectUI.prototype.getElement.call(this);
+    },
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, ProjectUI.prototype, ProjectLI.prototype, publicProto);

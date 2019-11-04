@@ -37,6 +37,7 @@
     <!-- Project container template -->
     <template id="project-template">
       <h1 class="title"> </h1>
+      <!-- Add new task button here -->
       <div class="content">
 
       </div>
@@ -52,6 +53,18 @@
         </select>
         <button class="create-todo-btn"> Create Task </button>
       </div>
+      <div class="edit-todo">
+        <input type="text" class="todo-title-field" placeholder="Add a title">
+        <input type="text" class="todo-description-field" placeholder="Add a description">
+        <input type="text" class="todo-due-date-field" placeholder="Schedule">
+        <select name="" class="todo-priority-field">
+          <option value="1"> 1 </option>
+          <option value="2"> 2 </option>
+          <option value="3"> 3 </option>
+          <option value="4"> 4 </option>
+        </select>
+        <button class="update-todo-btn"> Update Task </button>
+      </div>
     </template>
 
     <!-- Todo template -->
@@ -62,6 +75,7 @@
         <span class="todo-due-date"></span>
         <span class="todo-priority"></span>
         <button class="remove-todo-btn"> Remove </button>
+        <button class="edit-todo-btn"> Edit </button>
       </div>
     </template>
 

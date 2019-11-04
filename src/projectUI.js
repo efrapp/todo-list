@@ -33,6 +33,13 @@ ProjectUI.prototype.findElement = function findElement(elements) {
     p => parseInt(p.dataset.projectId, 10) === this.id);
 };
 
+ProjectUI.prototype.getElement = function getElement() {
+  const projectsContainer = getContainer();
+  const projectEl = this.findElement(projectsContainer.children);
+
+  return projectEl;
+};
+
 ProjectUI.prototype.createTitleLink = function createTitleLink() {
   const projectsList = document.getElementById('projects-list');
   const projectsListTemplate = document.getElementById('projects-list-template');

@@ -13,6 +13,9 @@ const Todo = (state) => {
     remove() {
       TodoUI.prototype.remove.call(this);
     },
+    getElement() {
+      return TodoUI.prototype.getElement.call(this);
+    },
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, TodoUI.prototype, TodoLI.prototype, publicProto);

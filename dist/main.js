@@ -154,6 +154,23 @@ const removeTodo = (id) => {
   todos.splice(index, 1);
 };
 
+const showEditTodoModal = (id) => {
+  const todo = findTodo(id);
+  const project = findProject(todo.projectId);
+  const editTodoForm = project.getElement().querySelector('.edit-todo');
+  const title = editTodoForm.querySelector('.todo-title-field');
+  const description = editTodoForm.querySelector('.todo-description-field');
+  const dueDate = editTodoForm.querySelector('.todo-due-date-field');
+  const priority = editTodoForm.querySelector('.todo-priority-field');
+
+  title.placeholder = todo.getTitle();
+  description.placeholder = todo.getDescription();
+  dueDate.placeholder = todo.getDueDate();
+  priority.value = todo.getPriority();
+
+  // Show modal with bootstrap
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const projectActions = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
@@ -189,6 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   projectsNode.addEventListener('click', (e) => {
     const button = e.target;
+
     if (button && button.matches('button.create-todo-btn')) {
       const title = button.parentElement.querySelector('.todo-title-field').value;
       const description = button.parentElement.querySelector('.todo-description-field').value;
@@ -208,6 +226,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = todoContainer.dataset.todoId;
 
       removeTodo(id);
+    }
+
+    if (button && button.matches('button.edit-todo-btn')) {
+      const todoContainer = button.parentElement;
+      const id = todoContainer.dataset.todoId;
+
+      showEditTodoModal(id);
     }
   });
 
@@ -245,6 +270,9 @@ const Todo = (state) => {
   const publicProto = {
     remove() {
       _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.remove.call(this);
+    },
+    getElement() {
+      return _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.getElement.call(this);
     },
   };
   // eslint-disable-next-line prefer-object-spread
@@ -293,9 +321,14 @@ TodoUI.prototype.findElement = function findElement(elements) {
     t => parseInt(t.dataset.todoId, 10) === this.id);
 };
 
-TodoUI.prototype.remove = function remove() {
+TodoUI.prototype.getElement = function getElement() {
   const todoEls = this.getProjectContainer().children;
   const todoEl = this.findElement(todoEls);
+  return todoEl;
+};
+
+TodoUI.prototype.remove = function remove() {
+  const todoEl = this.getElement();
 
   todoEl.remove();
 };
@@ -399,6 +432,9 @@ const Project = (state) => {
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.updateTitleLink.call(this, newTitle);
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.updateContentTitle.call(this, newTitle);
     },
+    getElement() {
+      return _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.getElement.call(this);
+    },
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, publicProto);
@@ -452,6 +488,13 @@ ProjectUI.prototype.show = function show() {
 ProjectUI.prototype.findElement = function findElement(elements) {
   return Array.prototype.find.call(elements,
     p => parseInt(p.dataset.projectId, 10) === this.id);
+};
+
+ProjectUI.prototype.getElement = function getElement() {
+  const projectsContainer = getContainer();
+  const projectEl = this.findElement(projectsContainer.children);
+
+  return projectEl;
 };
 
 ProjectUI.prototype.createTitleLink = function createTitleLink() {

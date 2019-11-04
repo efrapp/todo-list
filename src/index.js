@@ -60,6 +60,23 @@ const removeTodo = (id) => {
   todos.splice(index, 1);
 };
 
+const showEditTodoModal = (id) => {
+  const todo = findTodo(id);
+  const project = findProject(todo.projectId);
+  const editTodoForm = project.getElement().querySelector('.edit-todo');
+  const title = editTodoForm.querySelector('.todo-title-field');
+  const description = editTodoForm.querySelector('.todo-description-field');
+  const dueDate = editTodoForm.querySelector('.todo-due-date-field');
+  const priority = editTodoForm.querySelector('.todo-priority-field');
+
+  title.placeholder = todo.getTitle();
+  description.placeholder = todo.getDescription();
+  dueDate.placeholder = todo.getDueDate();
+  priority.value = todo.getPriority();
+
+  // Show modal with bootstrap
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const projectActions = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
@@ -95,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   projectsNode.addEventListener('click', (e) => {
     const button = e.target;
+
     if (button && button.matches('button.create-todo-btn')) {
       const title = button.parentElement.querySelector('.todo-title-field').value;
       const description = button.parentElement.querySelector('.todo-description-field').value;
@@ -114,6 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const id = todoContainer.dataset.todoId;
 
       removeTodo(id);
+    }
+
+    if (button && button.matches('button.edit-todo-btn')) {
+      const todoContainer = button.parentElement;
+      const id = todoContainer.dataset.todoId;
+
+      showEditTodoModal(id);
     }
   });
 
