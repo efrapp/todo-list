@@ -96,6 +96,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const projects = [];
+const todos = [];
 
 const dummyProject = () => {
   // eslint-disable-next-line prefer-object-spread
@@ -106,7 +107,11 @@ const dummyProject = () => {
       title: `First #${i}`,
       description: 'Testing a new task',
       dueDate: '2019/10/02',
+      priority: '1',
+      projectId: defaultProject.id,
     });
+
+    todos.push(todo);
     defaultProject.addTodo(todo);
   }
 
@@ -137,6 +142,16 @@ const showEditModal = (id) => {
   projectNameField.value = project.getTitle();
   projectNameField.setAttribute('data-project-id', project.id);
   // then show the modal with bootstrap
+};
+
+const findTodo = (id) => todos.find((todo) => todo.id === parseInt(id, 10));
+
+const removeTodo = (id) => {
+  const todo = findTodo(id);
+  const index = todos.indexOf(todo);
+
+  todo.remove();
+  todos.splice(index, 1);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -181,10 +196,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const priority = button.parentElement.querySelector('.todo-priority-field').value;
       const project = findProject(button.parentElement.parentElement.dataset.projectId);
       const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
-        title, description, dueDate, priority,
+        title, description, dueDate, priority, projectId: project.id,
       });
 
+      todos.push(todo);
       project.addTodo(todo);
+    }
+
+    if (button && button.matches('button.remove-todo-btn')) {
+      const todoContainer = button.parentElement;
+      const id = todoContainer.dataset.todoId;
+
+      removeTodo(id);
     }
   });
 
@@ -216,13 +239,18 @@ const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
 const Todo = (state) => {
   const {
-    title, description, dueDate, priority,
+    title, description, dueDate, priority, projectId,
   } = state;
 
+  const publicProto = {
+    remove() {
+      _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.remove.call(this);
+    },
+  };
   // eslint-disable-next-line prefer-object-spread
-  const proto = Object.assign({}, _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype);
+  const proto = Object.assign({}, _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, publicProto);
   const obj = Object.assign(Object.create(proto), {
-    id: id.next().value, title, description, dueDate, priority,
+    id: id.next().value, title, description, dueDate, priority, projectId,
   });
 
   obj.createView();
@@ -252,6 +280,24 @@ TodoUI.prototype.createView = function createView() {
   todoContent.querySelector('.todo-priority').textContent = this.getPriority();
 
   return todoContent;
+};
+
+TodoUI.prototype.getProjectContainer = function getProjectContainer() {
+  const projects = document.getElementById('projects').children;
+  return Array.prototype.find.call(projects,
+    (p) => parseInt(p.dataset.projectId, 10) === this.projectId).querySelector('.content');
+};
+
+TodoUI.prototype.findElement = function findElement(elements) {
+  return Array.prototype.find.call(elements,
+    (t) => parseInt(t.dataset.todoId, 10) === this.id);
+};
+
+TodoUI.prototype.remove = function remove() {
+  const todoEls = this.getProjectContainer().children;
+  const todoEl = this.findElement(todoEls);
+
+  todoEl.remove();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (TodoUI);
@@ -297,6 +343,10 @@ TodoLI.prototype.setPriority = function setPriority(p) {
   this.priority = p || this.priority;
 };
 
+TodoLI.prototype.getProjectId = function getProjectId() {
+  return this.projectId;
+};
+
 /* harmony default export */ __webpack_exports__["default"] = (TodoLI);
 
 
@@ -338,7 +388,7 @@ const Project = (state) => {
   const publicProto = {
     addTodo(todo) {
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addTodo.call(this, todo);
-      _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.addTodo.call(this, todo);
+      // ProjectLI.prototype.addTodo.call(this, todo);
     },
     remove() {
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.removeTitleLink.call(this);

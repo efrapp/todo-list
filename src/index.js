@@ -2,6 +2,7 @@ import Todo from './todo';
 import Project from './project';
 
 const projects = [];
+const todos = [];
 
 const dummyProject = () => {
   // eslint-disable-next-line prefer-object-spread
@@ -12,7 +13,11 @@ const dummyProject = () => {
       title: `First #${i}`,
       description: 'Testing a new task',
       dueDate: '2019/10/02',
+      priority: '1',
+      projectId: defaultProject.id,
     });
+
+    todos.push(todo);
     defaultProject.addTodo(todo);
   }
 
@@ -43,6 +48,16 @@ const showEditModal = (id) => {
   projectNameField.value = project.getTitle();
   projectNameField.setAttribute('data-project-id', project.id);
   // then show the modal with bootstrap
+};
+
+const findTodo = (id) => todos.find((todo) => todo.id === parseInt(id, 10));
+
+const removeTodo = (id) => {
+  const todo = findTodo(id);
+  const index = todos.indexOf(todo);
+
+  todo.remove();
+  todos.splice(index, 1);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -87,10 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const priority = button.parentElement.querySelector('.todo-priority-field').value;
       const project = findProject(button.parentElement.parentElement.dataset.projectId);
       const todo = Todo({
-        title, description, dueDate, priority,
+        title, description, dueDate, priority, projectId: project.id,
       });
 
+      todos.push(todo);
       project.addTodo(todo);
+    }
+
+    if (button && button.matches('button.remove-todo-btn')) {
+      const todoContainer = button.parentElement;
+      const id = todoContainer.dataset.todoId;
+
+      removeTodo(id);
     }
   });
 

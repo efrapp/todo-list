@@ -32,4 +32,8 @@ TodoLI.prototype.setPriority = function setPriority(p) {
   this.priority = p || this.priority;
 };
 
+TodoLI.prototype.getProjectId = function getProjectId() {
+  return this.projectId;
+};
+
 export default TodoLI;

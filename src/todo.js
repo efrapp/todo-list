@@ -6,13 +6,18 @@ const id = Indexer(0);
 
 const Todo = (state) => {
   const {
-    title, description, dueDate, priority,
+    title, description, dueDate, priority, projectId,
   } = state;
 
+  const publicProto = {
+    remove() {
+      TodoUI.prototype.remove.call(this);
+    },
+  };
   // eslint-disable-next-line prefer-object-spread
-  const proto = Object.assign({}, TodoUI.prototype, TodoLI.prototype);
+  const proto = Object.assign({}, TodoUI.prototype, TodoLI.prototype, publicProto);
   const obj = Object.assign(Object.create(proto), {
-    id: id.next().value, title, description, dueDate, priority,
+    id: id.next().value, title, description, dueDate, priority, projectId,
   });
 
   obj.createView();

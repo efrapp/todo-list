@@ -10,7 +10,7 @@ const Project = (state) => {
   const publicProto = {
     addTodo(todo) {
       ProjectUI.prototype.addTodo.call(this, todo);
-      ProjectLI.prototype.addTodo.call(this, todo);
+      // ProjectLI.prototype.addTodo.call(this, todo);
     },
     remove() {
       ProjectUI.prototype.removeTitleLink.call(this);
