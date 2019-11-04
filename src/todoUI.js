@@ -16,12 +16,12 @@ TodoUI.prototype.createView = function createView() {
 TodoUI.prototype.getProjectContainer = function getProjectContainer() {
   const projects = document.getElementById('projects').children;
   return Array.prototype.find.call(projects,
-    (p) => parseInt(p.dataset.projectId, 10) === this.projectId).querySelector('.content');
+    p => parseInt(p.dataset.projectId, 10) === this.projectId).querySelector('.content');
 };
 
 TodoUI.prototype.findElement = function findElement(elements) {
   return Array.prototype.find.call(elements,
-    (t) => parseInt(t.dataset.todoId, 10) === this.id);
+    t => parseInt(t.dataset.todoId, 10) === this.id);
 };
 
 TodoUI.prototype.remove = function remove() {

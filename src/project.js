@@ -4,13 +4,12 @@ import Indexer from './idGenerator';
 
 const id = Indexer(0);
 
-const Project = (state) => {
+const Project = state => {
   const { title } = state;
   const todos = [];
   const publicProto = {
     addTodo(todo) {
       ProjectUI.prototype.addTodo.call(this, todo);
-      // ProjectLI.prototype.addTodo.call(this, todo);
     },
     remove() {
       ProjectUI.prototype.removeTitleLink.call(this);

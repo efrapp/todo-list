@@ -14,7 +14,7 @@ ProjectLI.prototype.addTodo = function addTodo(todo) {
 };
 
 ProjectLI.prototype.removeTodo = function removeTodo(id) {
-  const todoIndex = this.todos.findIndex((todo) => todo.id === parseInt(id, 10));
+  const todoIndex = this.todos.findIndex(todo => todo.id === parseInt(id, 10));
   return this.todos.splice(todoIndex, 1);
 };
 
