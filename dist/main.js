@@ -122,7 +122,7 @@ const dummyProject = () => {
 
 const findProject = id => projects.find(project => project.id === parseInt(id, 10));
 
-const removeProject = id => {
+const removeProject = (id) => {
   const project = findProject(id);
   const index = projects.indexOf(project);
 
@@ -134,7 +134,7 @@ const removeProject = id => {
   }
 };
 
-const showEditModal = id => {
+const showEditModal = (id) => {
   const editProjectModal = document.getElementById('edit-project');
   const projectNameField = editProjectModal.querySelector('#project-name');
   const project = findProject(id);
@@ -146,7 +146,7 @@ const showEditModal = id => {
 
 const findTodo = id => todos.find(todo => todo.id === parseInt(id, 10));
 
-const removeTodo = id => {
+const removeTodo = (id) => {
   const todo = findTodo(id);
   const index = todos.indexOf(todo);
 
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dummyProject();
 
   // Show selected project
-  projectActions.addEventListener('click', e => {
+  projectActions.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
       const project = findProject(e.target.parentElement.dataset.projectId);
       project.show();
@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newProject.show();
   });
 
-  projectsNode.addEventListener('click', e => {
+  projectsNode.addEventListener('click', (e) => {
     const button = e.target;
     if (button && button.matches('button.create-todo-btn')) {
       const title = button.parentElement.querySelector('.todo-title-field').value;
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  updateProjectBtn.addEventListener('click', e => {
+  updateProjectBtn.addEventListener('click', (e) => {
     const updateProjectModal = e.target.parentElement;
     const updateProjectField = updateProjectModal.querySelector('#project-name');
     const newTitle = updateProjectField.value;
@@ -237,7 +237,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
-const Todo = state => {
+const Todo = (state) => {
   const {
     title, description, dueDate, priority, projectId,
   } = state;
@@ -382,7 +382,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
-const Project = state => {
+const Project = (state) => {
   const { title } = state;
   const todos = [];
   const publicProto = {
@@ -439,7 +439,7 @@ ProjectUI.prototype.create = function create() {
 ProjectUI.prototype.show = function show() {
   const projectsContainer = getContainer();
 
-  Array.prototype.forEach.call(projectsContainer.children, pject => {
+  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
     const p = pject;
     if (parseInt(p.dataset.projectId, 10) === this.id) {
       p.style.display = 'block';

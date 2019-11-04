@@ -4,7 +4,7 @@ import Indexer from './idGenerator';
 
 const id = Indexer(0);
 
-const Todo = state => {
+const Todo = (state) => {
   const {
     title, description, dueDate, priority, projectId,
   } = state;

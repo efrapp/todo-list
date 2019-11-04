@@ -18,7 +18,7 @@ ProjectUI.prototype.create = function create() {
 ProjectUI.prototype.show = function show() {
   const projectsContainer = getContainer();
 
-  Array.prototype.forEach.call(projectsContainer.children, pject => {
+  Array.prototype.forEach.call(projectsContainer.children, (pject) => {
     const p = pject;
     if (parseInt(p.dataset.projectId, 10) === this.id) {
       p.style.display = 'block';

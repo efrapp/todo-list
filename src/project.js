@@ -4,7 +4,7 @@ import Indexer from './idGenerator';
 
 const id = Indexer(0);
 
-const Project = state => {
+const Project = (state) => {
   const { title } = state;
   const todos = [];
   const publicProto = {
