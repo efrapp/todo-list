@@ -16,6 +16,18 @@ const Todo = (state) => {
     getElement() {
       return TodoUI.prototype.getElement.call(this);
     },
+    update(state) {
+      const {
+        title, description, dueDate, priority,
+      } = state;
+
+      TodoLI.prototype.setTitle.call(this, title);
+      TodoLI.prototype.setDescription.call(this, description);
+      TodoLI.prototype.setDueDate.call(this, dueDate);
+      TodoLI.prototype.setPriority.call(this, priority);
+
+      TodoUI.prototype.update.call(this, state);
+    },
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, TodoUI.prototype, TodoLI.prototype, publicProto);

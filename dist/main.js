@@ -163,6 +163,7 @@ const showEditTodoModal = (id) => {
   const dueDate = editTodoForm.querySelector('.todo-due-date-field');
   const priority = editTodoForm.querySelector('.todo-priority-field');
 
+  editTodoForm.setAttribute('data-todo-id', todo.id);
   title.placeholder = todo.getTitle();
   description.placeholder = todo.getDescription();
   dueDate.placeholder = todo.getDueDate();
@@ -206,6 +207,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   projectsNode.addEventListener('click', (e) => {
     const button = e.target;
+    const todoContainer = button.parentElement;
+    const id = todoContainer.dataset.todoId;
 
     if (button && button.matches('button.create-todo-btn')) {
       const title = button.parentElement.querySelector('.todo-title-field').value;
@@ -222,17 +225,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (button && button.matches('button.remove-todo-btn')) {
-      const todoContainer = button.parentElement;
-      const id = todoContainer.dataset.todoId;
-
       removeTodo(id);
     }
 
     if (button && button.matches('button.edit-todo-btn')) {
-      const todoContainer = button.parentElement;
-      const id = todoContainer.dataset.todoId;
-
       showEditTodoModal(id);
+    }
+
+    if (button && button.matches('button.update-todo-btn')) {
+      const title = todoContainer.querySelector('.todo-title-field').value;
+      const description = todoContainer.querySelector('.todo-description-field').value;
+      const dueDate = todoContainer.querySelector('.todo-due-date-field').value;
+      const priority = todoContainer.querySelector('.todo-priority-field').value;
+      const todo = findTodo(id);
+
+      todo.update({
+        title, description, dueDate, priority,
+      });
     }
   });
 
@@ -273,6 +282,18 @@ const Todo = (state) => {
     },
     getElement() {
       return _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.getElement.call(this);
+    },
+    update(state) {
+      const {
+        title, description, dueDate, priority,
+      } = state;
+
+      _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setTitle.call(this, title);
+      _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setDescription.call(this, description);
+      _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setDueDate.call(this, dueDate);
+      _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setPriority.call(this, priority);
+
+      _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.update.call(this, state);
     },
   };
   // eslint-disable-next-line prefer-object-spread
@@ -331,6 +352,18 @@ TodoUI.prototype.remove = function remove() {
   const todoEl = this.getElement();
 
   todoEl.remove();
+};
+
+TodoUI.prototype.update = function update(state) {
+  const {
+    title, description, dueDate, priority,
+  } = state;
+  const todoEl = this.getElement();
+
+  todoEl.querySelector('.todo-title').textContent = title || this.getTitle();
+  todoEl.querySelector('.todo-description').textContent = description || this.getDescription();
+  todoEl.querySelector('.todo-due-date').textContent = dueDate || this.getDueDate();
+  todoEl.querySelector('.todo-priority').textContent = priority || this.getPriority();
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (TodoUI);

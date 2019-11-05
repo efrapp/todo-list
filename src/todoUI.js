@@ -36,4 +36,16 @@ TodoUI.prototype.remove = function remove() {
   todoEl.remove();
 };
 
+TodoUI.prototype.update = function update(state) {
+  const {
+    title, description, dueDate, priority,
+  } = state;
+  const todoEl = this.getElement();
+
+  todoEl.querySelector('.todo-title').textContent = title || this.getTitle();
+  todoEl.querySelector('.todo-description').textContent = description || this.getDescription();
+  todoEl.querySelector('.todo-due-date').textContent = dueDate || this.getDueDate();
+  todoEl.querySelector('.todo-priority').textContent = priority || this.getPriority();
+};
+
 export default TodoUI;

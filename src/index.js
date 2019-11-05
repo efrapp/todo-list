@@ -69,6 +69,7 @@ const showEditTodoModal = (id) => {
   const dueDate = editTodoForm.querySelector('.todo-due-date-field');
   const priority = editTodoForm.querySelector('.todo-priority-field');
 
+  editTodoForm.setAttribute('data-todo-id', todo.id);
   title.placeholder = todo.getTitle();
   description.placeholder = todo.getDescription();
   dueDate.placeholder = todo.getDueDate();
@@ -112,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   projectsNode.addEventListener('click', (e) => {
     const button = e.target;
+    const todoContainer = button.parentElement;
+    const id = todoContainer.dataset.todoId;
 
     if (button && button.matches('button.create-todo-btn')) {
       const title = button.parentElement.querySelector('.todo-title-field').value;
@@ -128,17 +131,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (button && button.matches('button.remove-todo-btn')) {
-      const todoContainer = button.parentElement;
-      const id = todoContainer.dataset.todoId;
-
       removeTodo(id);
     }
 
     if (button && button.matches('button.edit-todo-btn')) {
-      const todoContainer = button.parentElement;
-      const id = todoContainer.dataset.todoId;
-
       showEditTodoModal(id);
+    }
+
+    if (button && button.matches('button.update-todo-btn')) {
+      const title = todoContainer.querySelector('.todo-title-field').value;
+      const description = todoContainer.querySelector('.todo-description-field').value;
+      const dueDate = todoContainer.querySelector('.todo-due-date-field').value;
+      const priority = todoContainer.querySelector('.todo-priority-field').value;
+      const todo = findTodo(id);
+
+      todo.update({
+        title, description, dueDate, priority,
+      });
     }
   });
 
