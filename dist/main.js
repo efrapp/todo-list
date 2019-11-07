@@ -303,6 +303,8 @@ const Todo = (state) => {
       _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setPriority.call(this, priority);
 
       _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.update.call(this, state);
+
+      return this;
     },
     complete(state) {
       const { completed } = state;

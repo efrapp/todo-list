@@ -27,6 +27,8 @@ const Todo = (state) => {
       TodoLI.prototype.setPriority.call(this, priority);
 
       TodoUI.prototype.update.call(this, state);
+
+      return this;
     },
     complete(state) {
       const { completed } = state;
