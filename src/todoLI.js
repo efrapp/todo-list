@@ -36,4 +36,12 @@ TodoLI.prototype.getProjectId = function getProjectId() {
   return this.projectId;
 };
 
+TodoLI.prototype.getCompletion = function getCompletion() {
+  return this.completed;
+};
+
+TodoLI.prototype.setCompletion = function setCompletion(c) {
+  this.completed = c;
+};
+
 export default TodoLI;

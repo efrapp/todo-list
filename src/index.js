@@ -14,6 +14,7 @@ const dummyProject = () => {
       description: 'Testing a new task',
       dueDate: '2019/10/02',
       priority: '1',
+      completed: false,
       projectId: defaultProject.id,
     });
 
@@ -112,16 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   projectsNode.addEventListener('click', (e) => {
-    const button = e.target;
-    const todoContainer = button.parentElement;
+    const el = e.target;
+    const todoContainer = el.parentElement;
     const id = todoContainer.dataset.todoId;
 
-    if (button && button.matches('button.create-todo-btn')) {
-      const title = button.parentElement.querySelector('.todo-title-field').value;
-      const description = button.parentElement.querySelector('.todo-description-field').value;
-      const dueDate = button.parentElement.querySelector('.todo-due-date-field').value;
-      const priority = button.parentElement.querySelector('.todo-priority-field').value;
-      const project = findProject(button.parentElement.parentElement.dataset.projectId);
+    if (el && el.matches('button.create-todo-btn')) {
+      const title = el.parentElement.querySelector('.todo-title-field').value;
+      const description = el.parentElement.querySelector('.todo-description-field').value;
+      const dueDate = el.parentElement.querySelector('.todo-due-date-field').value;
+      const priority = el.parentElement.querySelector('.todo-priority-field').value;
+      const project = findProject(el.parentElement.parentElement.dataset.projectId);
       const todo = Todo({
         title, description, dueDate, priority, projectId: project.id,
       });
@@ -130,24 +131,32 @@ document.addEventListener('DOMContentLoaded', () => {
       project.addTodo(todo);
     }
 
-    if (button && button.matches('button.remove-todo-btn')) {
+    if (el && el.matches('button.remove-todo-btn')) {
       removeTodo(id);
     }
 
-    if (button && button.matches('button.edit-todo-btn')) {
+    if (el && el.matches('button.edit-todo-btn')) {
       showEditTodoModal(id);
     }
 
-    if (button && button.matches('button.update-todo-btn')) {
+    if (el && el.matches('button.update-todo-btn')) {
       const title = todoContainer.querySelector('.todo-title-field').value;
       const description = todoContainer.querySelector('.todo-description-field').value;
       const dueDate = todoContainer.querySelector('.todo-due-date-field').value;
       const priority = todoContainer.querySelector('.todo-priority-field').value;
+      const completed = todoContainer.querySelector('.todo-completed-field').checked;
       const todo = findTodo(id);
 
       todo.update({
-        title, description, dueDate, priority,
+        title, description, dueDate, priority, completed,
       });
+    }
+
+    if (el && el.matches('input.todo-completed')) {
+      const completed = e.target.checked;
+      const todo = findTodo(id);
+
+      todo.complete({ completed }).remove();
     }
   });
 

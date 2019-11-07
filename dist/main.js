@@ -108,6 +108,7 @@ const dummyProject = () => {
       description: 'Testing a new task',
       dueDate: '2019/10/02',
       priority: '1',
+      completed: false,
       projectId: defaultProject.id,
     });
 
@@ -206,16 +207,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   projectsNode.addEventListener('click', (e) => {
-    const button = e.target;
-    const todoContainer = button.parentElement;
+    const el = e.target;
+    const todoContainer = el.parentElement;
     const id = todoContainer.dataset.todoId;
 
-    if (button && button.matches('button.create-todo-btn')) {
-      const title = button.parentElement.querySelector('.todo-title-field').value;
-      const description = button.parentElement.querySelector('.todo-description-field').value;
-      const dueDate = button.parentElement.querySelector('.todo-due-date-field').value;
-      const priority = button.parentElement.querySelector('.todo-priority-field').value;
-      const project = findProject(button.parentElement.parentElement.dataset.projectId);
+    if (el && el.matches('button.create-todo-btn')) {
+      const title = el.parentElement.querySelector('.todo-title-field').value;
+      const description = el.parentElement.querySelector('.todo-description-field').value;
+      const dueDate = el.parentElement.querySelector('.todo-due-date-field').value;
+      const priority = el.parentElement.querySelector('.todo-priority-field').value;
+      const project = findProject(el.parentElement.parentElement.dataset.projectId);
       const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_0__["default"])({
         title, description, dueDate, priority, projectId: project.id,
       });
@@ -224,24 +225,32 @@ document.addEventListener('DOMContentLoaded', () => {
       project.addTodo(todo);
     }
 
-    if (button && button.matches('button.remove-todo-btn')) {
+    if (el && el.matches('button.remove-todo-btn')) {
       removeTodo(id);
     }
 
-    if (button && button.matches('button.edit-todo-btn')) {
+    if (el && el.matches('button.edit-todo-btn')) {
       showEditTodoModal(id);
     }
 
-    if (button && button.matches('button.update-todo-btn')) {
+    if (el && el.matches('button.update-todo-btn')) {
       const title = todoContainer.querySelector('.todo-title-field').value;
       const description = todoContainer.querySelector('.todo-description-field').value;
       const dueDate = todoContainer.querySelector('.todo-due-date-field').value;
       const priority = todoContainer.querySelector('.todo-priority-field').value;
+      const completed = todoContainer.querySelector('.todo-completed-field').checked;
       const todo = findTodo(id);
 
       todo.update({
-        title, description, dueDate, priority,
+        title, description, dueDate, priority, completed,
       });
+    }
+
+    if (el && el.matches('input.todo-completed')) {
+      const completed = e.target.checked;
+      const todo = findTodo(id);
+
+      todo.complete({ completed }).remove();
     }
   });
 
@@ -273,7 +282,7 @@ const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
 const Todo = (state) => {
   const {
-    title, description, dueDate, priority, projectId,
+    title, description, dueDate, priority, completed, projectId,
   } = state;
 
   const publicProto = {
@@ -295,11 +304,18 @@ const Todo = (state) => {
 
       _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.update.call(this, state);
     },
+    complete(state) {
+      const { completed } = state;
+
+      _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.setCompletion.call(this, completed);
+
+      return this;
+    },
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, _todoUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _todoLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, publicProto);
   const obj = Object.assign(Object.create(proto), {
-    id: id.next().value, title, description, dueDate, priority, projectId,
+    id: id.next().value, title, description, dueDate, priority, completed, projectId,
   });
 
   obj.createView();
@@ -327,6 +343,7 @@ TodoUI.prototype.createView = function createView() {
   todoContent.querySelector('.todo-description').textContent = this.getDescription();
   todoContent.querySelector('.todo-due-date').textContent = this.getDueDate();
   todoContent.querySelector('.todo-priority').textContent = this.getPriority();
+  todoContent.querySelector('.todo-completed').checked = this.getCompletion();
 
   return todoContent;
 };
@@ -411,6 +428,14 @@ TodoLI.prototype.setPriority = function setPriority(p) {
 
 TodoLI.prototype.getProjectId = function getProjectId() {
   return this.projectId;
+};
+
+TodoLI.prototype.getCompletion = function getCompletion() {
+  return this.completed;
+};
+
+TodoLI.prototype.setCompletion = function setCompletion(c) {
+  this.completed = c;
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (TodoLI);

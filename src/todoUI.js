@@ -9,6 +9,7 @@ TodoUI.prototype.createView = function createView() {
   todoContent.querySelector('.todo-description').textContent = this.getDescription();
   todoContent.querySelector('.todo-due-date').textContent = this.getDueDate();
   todoContent.querySelector('.todo-priority').textContent = this.getPriority();
+  todoContent.querySelector('.todo-completed').checked = this.getCompletion();
 
   return todoContent;
 };
