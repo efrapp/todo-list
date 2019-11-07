@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import Todo from './todo';
 import Project from './project';
 
@@ -12,7 +13,7 @@ const dummyProject = () => {
     const todo = Todo({
       title: `First #${i}`,
       description: 'Testing a new task',
-      dueDate: '2019/10/02',
+      dueDate: format(new Date(), 'MM/dd/yyyy'),
       priority: '1',
       completed: false,
       projectId: defaultProject.id,
