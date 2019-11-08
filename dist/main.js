@@ -119,6 +119,9 @@ const dummyProject = () => {
   }
 
   projects.push(defaultProject);
+  localStorage.setItem('defaultProjectIncluded?', true);
+  localStorage.setItem('projects', JSON.stringify(projects));
+  localStorage.setItem('todos', JSON.stringify(todos));
 
   return defaultProject;
 };
@@ -180,13 +183,32 @@ const formatDueDate = (dueDate) => {
   return Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["format"])(new Date(year, day - 1, month), 'MM/dd/yyyy');
 };
 
+const restoreApp = () => {
+  const lsProjects = JSON.parse(localStorage.getItem('projects'));
+  const lsTodos = JSON.parse(localStorage.getItem('todos'));
+
+  lsProjects.forEach(p => projects.push(Object(_project__WEBPACK_IMPORTED_MODULE_2__["default"])(p)));
+  lsTodos.forEach(t => todos.push(Object(_todo__WEBPACK_IMPORTED_MODULE_1__["default"])(t)));
+
+  projects.forEach((p) => {
+    const todosByProject = todos.filter(t => t.projectId === p.id);
+
+    todosByProject.forEach(t => p.addTodo(t));
+  });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const projectActions = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
   const updateProjectBtn = document.getElementById('update-project-btn');
   const projectsNode = document.getElementById('projects');
+  const defaultProjectIncluded = JSON.parse(localStorage.getItem('defaultProjectIncluded?'));
 
-  dummyProject();
+  if (!defaultProjectIncluded) {
+    dummyProject();
+  } else {
+    restoreApp();
+  }
 
   // Show selected project
   projectActions.addEventListener('click', (e) => {
@@ -15835,7 +15857,6 @@ const id = Object(_idGenerator__WEBPACK_IMPORTED_MODULE_2__["default"])(0);
 
 const Project = (state) => {
   const { title } = state;
-  const todos = [];
   const publicProto = {
     addTodo(todo) {
       _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.addTodo.call(this, todo);
@@ -15856,7 +15877,7 @@ const Project = (state) => {
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, _projectUI__WEBPACK_IMPORTED_MODULE_0__["default"].prototype, _projectLI__WEBPACK_IMPORTED_MODULE_1__["default"].prototype, publicProto);
-  const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
+  const obj = Object.assign(Object.create(proto), { id: id.next().value, title });
 
   obj.create();
   obj.createTitleLink();

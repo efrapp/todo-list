@@ -6,7 +6,6 @@ const id = Indexer(0);
 
 const Project = (state) => {
   const { title } = state;
-  const todos = [];
   const publicProto = {
     addTodo(todo) {
       ProjectUI.prototype.addTodo.call(this, todo);
@@ -27,7 +26,7 @@ const Project = (state) => {
   };
   // eslint-disable-next-line prefer-object-spread
   const proto = Object.assign({}, ProjectUI.prototype, ProjectLI.prototype, publicProto);
-  const obj = Object.assign(Object.create(proto), { id: id.next().value, title, todos });
+  const obj = Object.assign(Object.create(proto), { id: id.next().value, title });
 
   obj.create();
   obj.createTitleLink();

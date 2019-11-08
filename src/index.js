@@ -24,6 +24,9 @@ const dummyProject = () => {
   }
 
   projects.push(defaultProject);
+  localStorage.setItem('defaultProjectIncluded?', true);
+  localStorage.setItem('projects', JSON.stringify(projects));
+  localStorage.setItem('todos', JSON.stringify(todos));
 
   return defaultProject;
 };
@@ -85,13 +88,32 @@ const formatDueDate = (dueDate) => {
   return format(new Date(year, day - 1, month), 'MM/dd/yyyy');
 };
 
+const restoreApp = () => {
+  const lsProjects = JSON.parse(localStorage.getItem('projects'));
+  const lsTodos = JSON.parse(localStorage.getItem('todos'));
+
+  lsProjects.forEach(p => projects.push(Project(p)));
+  lsTodos.forEach(t => todos.push(Todo(t)));
+
+  projects.forEach((p) => {
+    const todosByProject = todos.filter(t => t.projectId === p.id);
+
+    todosByProject.forEach(t => p.addTodo(t));
+  });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const projectActions = document.getElementById('projects-list');
   const createProjectBtn = document.getElementById('create-project');
   const updateProjectBtn = document.getElementById('update-project-btn');
   const projectsNode = document.getElementById('projects');
+  const defaultProjectIncluded = JSON.parse(localStorage.getItem('defaultProjectIncluded?'));
 
-  dummyProject();
+  if (!defaultProjectIncluded) {
+    dummyProject();
+  } else {
+    restoreApp();
+  }
 
   // Show selected project
   projectActions.addEventListener('click', (e) => {
