@@ -169,10 +169,15 @@ const showEditTodoModal = (id) => {
   editTodoForm.setAttribute('data-todo-id', todo.id);
   title.placeholder = todo.getTitle();
   description.placeholder = todo.getDescription();
-  dueDate.placeholder = todo.getDueDate();
+  dueDate.value = Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["format"])(new Date(todo.getDueDate()), 'yyyy-MM-dd');
   priority.value = todo.getPriority();
 
   // Show modal with bootstrap
+};
+
+const formatDueDate = (dueDate) => {
+  const [year, month, day] = dueDate.split('-').map(v => parseInt(v, 10));
+  return Object(date_fns__WEBPACK_IMPORTED_MODULE_0__["format"])(new Date(year, day - 1, month), 'MM/dd/yyyy');
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -216,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el && el.matches('button.create-todo-btn')) {
       const title = el.parentElement.querySelector('.todo-title-field').value;
       const description = el.parentElement.querySelector('.todo-description-field').value;
-      const dueDate = el.parentElement.querySelector('.todo-due-date-field').value;
+      const dueDate = formatDueDate(el.parentElement.querySelector('.todo-due-date-field').value);
       const priority = el.parentElement.querySelector('.todo-priority-field').value;
       const project = findProject(el.parentElement.parentElement.dataset.projectId);
       const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_1__["default"])({
@@ -238,13 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (el && el.matches('button.update-todo-btn')) {
       const title = todoContainer.querySelector('.todo-title-field').value;
       const description = todoContainer.querySelector('.todo-description-field').value;
-      const dueDate = todoContainer.querySelector('.todo-due-date-field').value;
+      const dueDate = formatDueDate(todoContainer.querySelector('.todo-due-date-field').value);
       const priority = todoContainer.querySelector('.todo-priority-field').value;
-      const completed = todoContainer.querySelector('.todo-completed-field').checked;
       const todo = findTodo(id);
 
       todo.update({
-        title, description, dueDate, priority, completed,
+        title, description, dueDate, priority,
       });
     }
 
