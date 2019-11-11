@@ -160,6 +160,8 @@ const removeTodo = (id) => {
 
   todo.remove();
   todos.splice(index, 1);
+
+  localStorage.setItem('todos', JSON.stringify(todos));
 };
 
 const showEditTodoModal = (id) => {
@@ -255,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       todos.push(todo);
       project.addTodo(todo);
+      localStorage.setItem('todos', JSON.stringify(todos));
     }
 
     if (el && el.matches('button.remove-todo-btn')) {
@@ -275,13 +278,18 @@ document.addEventListener('DOMContentLoaded', () => {
       todo.update({
         title, description, dueDate, priority,
       });
+
+      localStorage.setItem('todos', JSON.stringify(todos));
     }
 
     if (el && el.matches('input.todo-completed')) {
       const completed = e.target.checked;
       const todo = findTodo(id);
 
-      todo.complete({ completed }).remove();
+      todo.complete({ completed });
+      removeTodo(id);
+
+      localStorage.setItem('todos', JSON.stringify(todos));
     }
   });
 
