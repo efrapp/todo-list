@@ -1,3 +1,5 @@
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { format } from 'date-fns';
 import Todo from './todo';
 import Project from './project';
