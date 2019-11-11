@@ -43,6 +43,8 @@ const removeProject = (id) => {
   if (projects.length !== 0) {
     projects[index - 1].show();
   }
+
+  localStorage.setItem('projects', JSON.stringify(projects));
 };
 
 const showEditModal = (id) => {
@@ -138,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     projects.push(newProject);
     newProject.show();
+    localStorage.setItem('projects', JSON.stringify(projects));
   });
 
   projectsNode.addEventListener('click', (e) => {
@@ -187,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Update project
   updateProjectBtn.addEventListener('click', (e) => {
     const updateProjectModal = e.target.parentElement;
     const updateProjectField = updateProjectModal.querySelector('#project-name');
@@ -194,5 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const project = findProject(updateProjectField.dataset.projectId);
 
     project.update({ newTitle });
+    localStorage.setItem('projects', JSON.stringify(projects));
   });
 });
