@@ -41,12 +41,23 @@
                 </div>
               </div>
           </div>
-          <div id="edit-project">
-            <h2> Edit Project </h2>
-            <label for="project-name"> Name: </label>
-            <input type="text" name="project[name]" id="project-name">
-            <button id="update-project-btn"> Update project </button>
-          </div>
+          <div class="modal fade modal-edit-project" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2> Edit Project </h2>
+                </div>
+                <div class="modal-body">
+                  <div id="edit-project">
+                    <div class="from-group">
+                      <label for="project-name"> Name: </label>
+                      <input type="text" name="project[name]" id="project-name">
+                    </div>
+                    <button id="update-project-btn" data-dismiss="modal" class="btn btn-success"> Update project </button>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>
@@ -106,8 +117,8 @@
     <template id="projects-list-template">
       <li class="project-actions">
         <a href="#" class="project-link"> </a>
+        <button type="button" class="btn btn-outline-warning btn-sm edit-project-btn" data-toggle="modal" data-target=".modal-edit-project"> Edit </button>
         <button class="remove-project"> Remove </button>
-        <button class="edit-project-btn"> Edit </button>
       </li>
     </template>
   </body>
