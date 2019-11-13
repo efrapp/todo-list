@@ -190,7 +190,7 @@ const showEditTodoModal = (id) => {
 
 const formatDueDate = (dueDate) => {
   const [year, month, day] = dueDate.split('-').map(v => parseInt(v, 10));
-  return Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["format"])(new Date(year, day - 1, month), 'MM/dd/yyyy');
+  return Object(date_fns__WEBPACK_IMPORTED_MODULE_2__["format"])(new Date(year, month - 1, day), 'MM/dd/yyyy');
 };
 
 const restoreApp = () => {
@@ -248,8 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   projectsNode.addEventListener('click', (e) => {
     const el = e.target;
-    const todoContainer = el.parentElement;
-    const id = todoContainer.dataset.todoId;
+    const todoContainer = el.closest('div.todo');
+    let id = null;
+
+    // Exclude create and update task buttons because they are outside of todo container
+    if (todoContainer) {
+      id = todoContainer.dataset.todoId;
+    }
 
     if (el && el.matches('button.create-todo-btn')) {
       const title = el.parentElement.querySelector('.todo-title-field').value;
@@ -275,10 +280,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (el && el.matches('button.update-todo-btn')) {
-      const title = todoContainer.querySelector('.todo-title-field').value;
-      const description = todoContainer.querySelector('.todo-description-field').value;
-      const dueDate = formatDueDate(todoContainer.querySelector('.todo-due-date-field').value);
-      const priority = todoContainer.querySelector('.todo-priority-field').value;
+      const todoEditForm = el.closest('div.edit-todo');
+      const id = todoEditForm.dataset.todoId;
+      const title = todoEditForm.querySelector('.todo-title-field').value;
+      const description = todoEditForm.querySelector('.todo-description-field').value;
+      const dueDate = formatDueDate(todoEditForm.querySelector('.todo-due-date-field').value);
+      const priority = todoEditForm.querySelector('.todo-priority-field').value;
       const todo = findTodo(id);
 
       todo.update({

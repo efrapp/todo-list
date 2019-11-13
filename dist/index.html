@@ -99,17 +99,29 @@
 
     <!-- Todo template -->
     <template id="todo-template">
-      <div class="todo">
-        <h2 class="todo-title"></h2>
-        <p class="todo-description"></p>
-        <span class="todo-due-date"></span>
-        <span class="todo-priority"></span>
-        <input id="todo-completed" type="checkbox" class="todo-completed">
-        <label for="todo-completed">
-          Completed?
-        </label>
-        <button class="remove-todo-btn"> Remove </button>
-        <button class="edit-todo-btn"> Edit </button>
+      <div class="todo card mb-3 border-success">
+        <div class="card-header text-success">
+          <h4 class="todo-title"></h4>
+        </div>
+        <div class="card-body text-secondary">
+          <p class="todo-description"></p>
+        </div>
+        <div class="card-footer bg-transparent text-secondary">
+          <div class="row">
+            <div class="col">
+              <span class="todo-due-date badge badge-secondary mr-3"></span>
+              <span class="todo-priority badge badge-primary"></span>
+            </div>
+            <div class="col text-right">
+              <input id="todo-completed" type="checkbox" class="todo-completed">
+              <label for="todo-completed">
+                Completed?
+              </label>
+              <button class="edit-todo-btn btn btn-outline-warning btn-sm"> Edit </button>
+              <button class="remove-todo-btn btn btn-outline-danger btn-sm"> Remove </button>
+            </div>
+          </div>
+        </div>
       </div>
     </template>
 
