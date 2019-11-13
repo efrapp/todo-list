@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = el.parentElement.querySelector('.todo-description-field').value;
       const dueDate = formatDueDate(el.parentElement.querySelector('.todo-due-date-field').value);
       const priority = el.parentElement.querySelector('.todo-priority-field').value;
-      const project = findProject(el.parentElement.parentElement.dataset.projectId);
+      const project = findProject(el.closest('div.modal-new-todo').parentElement.dataset.projectId);
       const todo = Todo({
         title, description, dueDate, priority, projectId: project.id,
       });

@@ -44,8 +44,6 @@ const Todo = (state) => {
     id: id.next().value, title, description, dueDate, priority, completed, projectId,
   });
 
-  obj.createView();
-
   return obj;
 };
 

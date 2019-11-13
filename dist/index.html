@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col">
         <div class="sidebar">
-          <button id="new-project" type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-add-new-project"> New project </button>
+          <button id="new-project" type="button" class="btn btn-primary mt-2 mb-3" data-toggle="modal" data-target=".modal-add-new-project"> New project </button>
           <ul id="projects-list" class="list-group list-group-flush">
             
           </ul>
@@ -66,22 +66,47 @@
 
     <!-- Project container template -->
     <template id="project-template">
-      <h1 class="title"> </h1>
-      <!-- Add new task button here -->
+      <div class="row">
+        <div class="col-10">
+          <h1 class="title"> </h1>
+        </div>
+        <div class="col text-right">
+          <button class="btn btn-primary mt-2" data-toggle="modal" data-target=".modal-new-todo"> New Task</button>
+        </div>
+      </div>
       <div class="content">
 
       </div>
-      <div class="new-todo">
-        <input type="text" class="todo-title-field" placeholder="Add a title">
-        <input type="text" class="todo-description-field" placeholder="Add a description">
-        <input type="date" class="todo-due-date-field" placeholder="Schedule">
-        <select name="" class="todo-priority-field">
-          <option value="1"> 1 </option>
-          <option value="2"> 2 </option>
-          <option value="3"> 3 </option>
-          <option value="4"> 4 </option>
-        </select>
-        <button class="create-todo-btn"> Create Task </button>
+      <div class="modal fade modal-new-todo" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3> Create New Task </h3>
+              </div>
+              <div class="modal-body">
+                <div class="new-todo">
+                  <div class="form-group">
+                    <input type="text" class="todo-title-field form-control" placeholder="Add a title">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="todo-description-field form-control" placeholder="Add a description">
+                  </div>
+                  <div class="form-group">
+                    <input type="date" class="todo-due-date-field form-control" placeholder="Schedule">
+                  </div>
+                  <div class="form-group">
+                    <select name="" class="todo-priority-field form-control">
+                      <option value="1"> 1 </option>
+                      <option value="2"> 2 </option>
+                      <option value="3"> 3 </option>
+                      <option value="4"> 4 </option>
+                    </select>
+                  </div>
+                  <button class="create-todo-btn btn btn-success" data-dismiss="modal"> Create Task </button>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
       <div class="edit-todo">
         <input type="text" class="todo-title-field" placeholder="Add a title">

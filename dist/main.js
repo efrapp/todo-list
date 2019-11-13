@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = el.parentElement.querySelector('.todo-description-field').value;
       const dueDate = formatDueDate(el.parentElement.querySelector('.todo-due-date-field').value);
       const priority = el.parentElement.querySelector('.todo-priority-field').value;
-      const project = findProject(el.parentElement.parentElement.dataset.projectId);
+      const project = findProject(el.closest('div.modal-new-todo').parentElement.dataset.projectId);
       const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_3__["default"])({
         title, description, dueDate, priority, projectId: project.id,
       });
@@ -33837,8 +33837,6 @@ const Todo = (state) => {
     id: id.next().value, title, description, dueDate, priority, completed, projectId,
   });
 
-  obj.createView();
-
   return obj;
 };
 
@@ -34089,7 +34087,7 @@ ProjectUI.prototype.createTitleLink = function createTitleLink() {
 ProjectUI.prototype.addTodo = function addTodo(todo) {
   const projectsContainer = getContainer();
   this.findElement(projectsContainer.children)
-    .querySelector('.content').appendChild(todo.createView());
+    .querySelector('.content').prepend(todo.createView());
 };
 
 ProjectUI.prototype.removeTitleLink = function removeTitleLink() {

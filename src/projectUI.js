@@ -56,7 +56,7 @@ ProjectUI.prototype.createTitleLink = function createTitleLink() {
 ProjectUI.prototype.addTodo = function addTodo(todo) {
   const projectsContainer = getContainer();
   this.findElement(projectsContainer.children)
-    .querySelector('.content').appendChild(todo.createView());
+    .querySelector('.content').prepend(todo.createView());
 };
 
 ProjectUI.prototype.removeTitleLink = function removeTitleLink() {
