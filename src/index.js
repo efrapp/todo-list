@@ -73,8 +73,9 @@ const removeTodo = (id) => {
 
 const showEditTodoModal = (id) => {
   const todo = findTodo(id);
-  const project = findProject(todo.projectId);
-  const editTodoForm = project.getElement().querySelector('.edit-todo');
+  // const project = findProject(todo.projectId);
+  const editModal = document.getElementById('modal-edit-todo');
+  const editTodoForm = editModal.querySelector('.edit-todo');
   const title = editTodoForm.querySelector('.todo-title-field');
   const description = editTodoForm.querySelector('.todo-description-field');
   const dueDate = editTodoForm.querySelector('.todo-due-date-field');
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const createProjectBtn = document.getElementById('create-project');
   const updateProjectBtn = document.getElementById('update-project-btn');
   const projectsNode = document.getElementById('projects');
+  const todoActions = document.getElementById('todo-actions');
   const defaultProjectIncluded = JSON.parse(localStorage.getItem('defaultProjectIncluded?'));
 
   if (!defaultProjectIncluded) {
@@ -180,22 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
       showEditTodoModal(id);
     }
 
-    if (el && el.matches('button.update-todo-btn')) {
-      const todoEditForm = el.closest('div.edit-todo');
-      const id = todoEditForm.dataset.todoId;
-      const title = todoEditForm.querySelector('.todo-title-field').value;
-      const description = todoEditForm.querySelector('.todo-description-field').value;
-      const dueDate = formatDueDate(todoEditForm.querySelector('.todo-due-date-field').value);
-      const priority = todoEditForm.querySelector('.todo-priority-field').value;
-      const todo = findTodo(id);
-
-      todo.update({
-        title, description, dueDate, priority,
-      });
-
-      localStorage.setItem('todos', JSON.stringify(todos));
-    }
-
     if (el && el.matches('input.todo-completed')) {
       const completed = e.target.checked;
       const todo = findTodo(id);
@@ -216,5 +202,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     project.update({ newTitle });
     localStorage.setItem('projects', JSON.stringify(projects));
+  });
+
+  todoActions.addEventListener('click', (e) => {
+    const el = e.target;
+
+    if (el && el.matches('button.update-todo-btn')) {
+      const todoEditForm = el.closest('div.edit-todo');
+      const id = todoEditForm.dataset.todoId;
+      const title = todoEditForm.querySelector('.todo-title-field').value;
+      const description = todoEditForm.querySelector('.todo-description-field').value;
+      const dueDate = formatDueDate(todoEditForm.querySelector('.todo-due-date-field').value);
+      const priority = todoEditForm.querySelector('.todo-priority-field').value;
+      const todo = findTodo(id);
+
+      todo.update({
+        title, description, dueDate, priority,
+      });
+
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
   });
 });
