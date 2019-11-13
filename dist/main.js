@@ -223,16 +223,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show selected project
   projectActions.addEventListener('click', (e) => {
     if (e.target && e.target.matches('a.project-link')) {
-      const project = findProject(e.target.parentElement.dataset.projectId);
+      const project = findProject(e.target.closest('li.project-actions').dataset.projectId);
       project.show();
     }
 
     if (e.target && e.target.matches('button.remove-project')) {
-      removeProject(e.target.parentElement.dataset.projectId);
+      removeProject(e.target.closest('li.project-actions').dataset.projectId);
     }
 
     if (e.target && e.target.matches('button.edit-project-btn')) {
-      showEditModal(e.target.parentElement.dataset.projectId);
+      showEditModal(e.target.closest('li.project-actions').dataset.projectId);
     }
   });
 

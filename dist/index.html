@@ -13,7 +13,7 @@
       <div class="col">
         <div class="sidebar">
           <button id="new-project" type="button" class="btn btn-primary" data-toggle="modal" data-target=".modal-add-new-project"> New project </button>
-          <ul id="projects-list">
+          <ul id="projects-list" class="list-group list-group-flush">
             
           </ul>
         </div>
@@ -115,10 +115,16 @@
 
     <!-- Projects list template -->
     <template id="projects-list-template">
-      <li class="project-actions">
-        <a href="#" class="project-link"> </a>
-        <button type="button" class="btn btn-outline-warning btn-sm edit-project-btn" data-toggle="modal" data-target=".modal-edit-project"> Edit </button>
-        <button type="button" class="btn btn-outline-danger btn-sm btn-sm remove-project"> Remove </button>
+      <li class="list-group-item project-actions">
+        <div class="row">
+          <div class="col">
+            <a href="#" class="project-link"> </a>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-outline-warning btn-sm edit-project-btn" data-toggle="modal" data-target=".modal-edit-project"> Edit </button>
+            <button type="button" class="btn btn-outline-danger btn-sm btn-sm remove-project"> Remove </button>
+          </div>
+        </div>
       </li>
     </template>
   </body>
