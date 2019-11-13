@@ -170,6 +170,13 @@ const removeTodo = (id) => {
   localStorage.setItem('todos', JSON.stringify(todos));
 };
 
+const showNewTodoModal = (projectId) => {
+  const newTodoModal = document.getElementById('modal-new-todo');
+  const newTodoForm = newTodoModal.querySelector('.new-todo');
+
+  newTodoForm.setAttribute('data-project-id', projectId);
+};
+
 const showEditTodoModal = (id) => {
   const todo = findTodo(id);
   // const project = findProject(todo.projectId);
@@ -258,19 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
       id = todoContainer.dataset.todoId;
     }
 
-    if (el && el.matches('button.create-todo-btn')) {
-      const title = el.parentElement.querySelector('.todo-title-field').value;
-      const description = el.parentElement.querySelector('.todo-description-field').value;
-      const dueDate = formatDueDate(el.parentElement.querySelector('.todo-due-date-field').value);
-      const priority = el.parentElement.querySelector('.todo-priority-field').value;
-      const project = findProject(el.closest('div.modal-new-todo').parentElement.dataset.projectId);
-      const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_3__["default"])({
-        title, description, dueDate, priority, projectId: project.id,
-      });
-
-      todos.push(todo);
-      project.addTodo(todo);
-      localStorage.setItem('todos', JSON.stringify(todos));
+    if (el && el.matches('button.new-todo-btn')) {
+      id = el.parentElement.parentElement.parentElement.dataset.projectId;
+      showNewTodoModal(id);
     }
 
     if (el && el.matches('button.remove-todo-btn')) {
@@ -305,6 +302,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   todoActions.addEventListener('click', (e) => {
     const el = e.target;
+
+    if (el && el.matches('button.create-todo-btn')) {
+      const title = el.parentElement.querySelector('.todo-title-field').value;
+      const description = el.parentElement.querySelector('.todo-description-field').value;
+      const dueDate = formatDueDate(el.parentElement.querySelector('.todo-due-date-field').value);
+      const priority = el.parentElement.querySelector('.todo-priority-field').value;
+      const project = findProject(el.closest('div.new-todo').dataset.projectId);
+      const todo = Object(_todo__WEBPACK_IMPORTED_MODULE_3__["default"])({
+        title, description, dueDate, priority, projectId: project.id,
+      });
+
+      todos.push(todo);
+      project.addTodo(todo);
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
 
     if (el && el.matches('button.update-todo-btn')) {
       const todoEditForm = el.closest('div.edit-todo');
