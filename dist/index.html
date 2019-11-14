@@ -8,17 +8,17 @@
     <script src="main.js"></script>
   </head>
   <body class="container">
-    <h1 class="app-title text-center"> TODO App </h1>
+    <h1 class="app-title text-center mt-2 mb-3 mx-5 pb-4 display-3"> Taskit App </h1>
     <div class="row">
       <div class="col">
         <div class="sidebar">
-          <button id="new-project" type="button" class="btn btn-primary mt-2 mb-3" data-toggle="modal" data-target=".modal-add-new-project"> New project </button>
+          <button id="new-project" type="button" class="btn btn-primary my-4" data-toggle="modal" data-target=".modal-add-new-project"> New project </button>
           <ul id="projects-list" class="list-group list-group-flush">
             
           </ul>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-8 shadow p-4">
         <div id="main-section">
           <div id="projects">
             
@@ -130,12 +130,12 @@
 
     <!-- Project container template -->
     <template id="project-template">
-      <div class="row">
-        <div class="col-10">
-          <h1 class="title"> </h1>
+      <div class="row align-items-center">
+        <div class="col-8">
+          <h1 class="title display-4"> </h1>
         </div>
         <div class="col text-right">
-          <button class="new-todo-btn btn btn-primary mt-2" data-toggle="modal" data-target="#modal-new-todo"> New Task</button>
+          <button class="new-todo-btn btn btn-primary" data-toggle="modal" data-target="#modal-new-todo"> New Task</button>
         </div>
       </div>
       <div class="content">
