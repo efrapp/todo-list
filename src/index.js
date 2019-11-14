@@ -114,6 +114,10 @@ const restoreApp = () => {
 
     todosByProject.forEach(t => p.addTodo(t));
   });
+
+  if (projects.length > 0) {
+    projects[0].show();
+  }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
