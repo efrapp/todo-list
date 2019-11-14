@@ -16,7 +16,7 @@
         "sourceType": "module"
     },
     "settings": {
-        "import/core-modules": ["bootstrap", "date-fns", "bootstrap/dist/css"]
+        "import/core-modules": ["bootstrap", "date-fns", "bootstrap/dist/css/bootstrap.min.css"]
     },
     "rules": {
         "no-shadow": 0,
