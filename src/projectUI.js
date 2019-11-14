@@ -9,6 +9,7 @@ ProjectUI.prototype.create = function create() {
   const projectContent = document.importNode(projectTemplate.content, true);
 
   projectContainer.setAttribute('data-project-id', this.id);
+  projectContainer.classList.add('project');
 
   projectContent.querySelector('.title').textContent = this.getTitle();
   projectContainer.prepend(projectContent);

@@ -266,7 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (el && el.matches('button.new-todo-btn')) {
-      id = el.parentElement.parentElement.parentElement.dataset.projectId;
+      // improve the search for project id
+      id = el.closest('div.project').dataset.projectId;
       showNewTodoModal(id);
     }
 
@@ -34058,6 +34059,7 @@ ProjectUI.prototype.create = function create() {
   const projectContent = document.importNode(projectTemplate.content, true);
 
   projectContainer.setAttribute('data-project-id', this.id);
+  projectContainer.classList.add('project');
 
   projectContent.querySelector('.title').textContent = this.getTitle();
   projectContainer.prepend(projectContent);

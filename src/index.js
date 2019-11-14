@@ -167,7 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (el && el.matches('button.new-todo-btn')) {
-      id = el.parentElement.parentElement.parentElement.dataset.projectId;
+      // improve the search for project id
+      id = el.closest('div.project').dataset.projectId;
       showNewTodoModal(id);
     }
 
