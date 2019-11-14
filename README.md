@@ -1,3 +1,4 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/36aa137a-a217-49c5-8061-84101ad3afb1/deploy-status)](https://app.netlify.com/sites/taskealo/deploys)
 # Todo List Application
 Application to manage daily based tasks in a simple and orgnize way. It is inspired by the [Todoist app](https://todoist.com/). 
 
