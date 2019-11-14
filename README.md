@@ -11,6 +11,7 @@ The true value of this app resides on the concepts apply to it. Been able to use
 ## Tools Used
 * [Boostrap 4](https://getbootstrap.com/)
 * [date-fns](https://date-fns.org/): robust library to handle dates on Javascript
+* [Local Storage](https://developer.mozilla.org/es/docs/Web/API/Window/localStorage)
 
 ## Usage
 
