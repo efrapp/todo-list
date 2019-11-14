@@ -19,5 +19,12 @@
         "no-param-reassign": 0,
         "eol-last": 0,
         "arrow-parens": [2, "as-needed", { "requireForBlockBody": true }]
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "paths": ["bootstrap", "date-fns"]
+            }
+        }
     }
 }
