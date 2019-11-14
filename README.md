@@ -14,8 +14,7 @@ The true value of this app resides on the concepts apply to it. Been able to use
 
 ## Usage
 
-- Clone the project and move to the root of it
-- Switch to the corresponding branch (`develop`, `todo`, etc)
+- Clone the project and move to the root of it: `git clone -b <branch> <repo_url>`
 - Run `npm install` to install all the needed dependencies
 - Finally, run `npm run server` to open the page in the browser
 
