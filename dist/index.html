@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Taskealo</title>
+    <script src="main.js"></script>
+  </head>
+  <body class="container">
+    <h1 class="app-title text-center mt-2 mb-3 mx-5 pb-4 display-3"> Taskealo </h1>
+    <div class="row">
+      <div class="col">
+        <div class="sidebar">
+          <button id="new-project" type="button" class="btn btn-primary my-4" data-toggle="modal" data-target=".modal-add-new-project"> New project </button>
+          <ul id="projects-list" class="list-group list-group-flush">
+            
+          </ul>
+        </div>
+      </div>
+      <div class="col-8 shadow p-4">
+        <div id="main-section">
+          <div id="projects">
+            
+          </div>
+          <div class="modal fade modal-add-new-project" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2> Add New Project </h2>
+                  </div>
+                  <div class="modal-body">
+                    <div id="add-new-project">
+                      <div class="form-group">
+                        <label for="project-name"> Name: </label>
+                        <input type="text" name="project[name]" id="project-name" class="form-control">
+                      </div>
+                      <button id="create-project" data-dismiss="modal" class="btn btn-success"> Create new project </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="modal fade modal-edit-project" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2> Edit Project </h2>
+                </div>
+                <div class="modal-body">
+                  <div id="edit-project">
+                    <div class="form-group">
+                      <label for="project-name"> Name: </label>
+                      <input type="text" name="project[name]" id="project-name" class="form-control">
+                    </div>
+                    <button id="update-project-btn" data-dismiss="modal" class="btn btn-success"> Update project </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="todo-actions">
+            <div id="modal-new-todo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3> Create New Task </h3>
+                  </div>
+                  <div class="modal-body">
+                    <div class="new-todo">
+                      <div class="form-group">
+                        <input type="text" class="todo-title-field form-control" placeholder="Add a title">
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="todo-description-field form-control" placeholder="Add a description">
+                      </div>
+                      <div class="form-group">
+                        <input type="date" class="todo-due-date-field form-control" placeholder="Schedule">
+                      </div>
+                      <div class="form-group">
+                        <select name="" class="todo-priority-field form-control">
+                          <option value="1"> 1 </option>
+                          <option value="2"> 2 </option>
+                          <option value="3"> 3 </option>
+                          <option value="4"> 4 </option>
+                        </select>
+                      </div>
+                      <button class="create-todo-btn btn btn-success" data-dismiss="modal"> Create Task </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="modal-edit-todo" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3> Edit Task </h3>
+                  </div>
+                  <div class="modal-body">
+                    <div class="edit-todo">
+                      <div class="form-group">
+                        <input type="text" class="todo-title-field form-control" placeholder="Add a title">
+                      </div>
+                      <div class="form-group">
+                        <input type="text" class="todo-description-field form-control" placeholder="Add a description">
+                      </div>
+                      <div class="form-group">
+                        <input type="date" class="todo-due-date-field form-control" placeholder="Schedule">
+                      </div>
+                      <div class="form-group">
+                        <select name="" class="todo-priority-field form-control">
+                          <option value="1"> 1 </option>
+                          <option value="2"> 2 </option>
+                          <option value="3"> 3 </option>
+                          <option value="4"> 4 </option>
+                        </select>
+                      </div>
+                      <button class="update-todo-btn btn btn-warning" data-dismiss="modal"> Update Task </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Templates -->
+
+    <!-- Project container template -->
+    <template id="project-template">
+      <div class="row align-items-center">
+        <div class="col-8">
+          <h1 class="title display-4"> </h1>
+        </div>
+        <div class="col text-right">
+          <button class="new-todo-btn btn btn-primary" data-toggle="modal" data-target="#modal-new-todo"> New Task</button>
+        </div>
+      </div>
+      <div class="content">
+
+      </div>
+    </template>
+
+    <!-- Todo template -->
+    <template id="todo-template">
+      <div class="todo card mb-3 border-success">
+        <div class="card-header text-success">
+          <h4 class="todo-title"></h4>
+        </div>
+        <div class="card-body text-secondary">
+          <p class="todo-description"></p>
+        </div>
+        <div class="card-footer bg-transparent text-secondary">
+          <div class="row">
+            <div class="col">
+              <button type="button" class="btn btn-secondary btn-sm">
+                Due Date <span class="todo-due-date badge badge-light"></span>
+              </button>
+              <button type="button" class="btn btn-primary btn-sm">
+                Priority <span class="todo-priority badge badge-light"></span>
+              </button>
+            </div>
+            <div class="col text-right">
+              <input id="todo-completed" type="checkbox" class="todo-completed">
+              <label for="todo-completed">
+                Completed?
+              </label>
+              <button class="edit-todo-btn btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#modal-edit-todo"> Edit </button>
+              <button class="remove-todo-btn btn btn-outline-danger btn-sm"> Remove </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Projects list template -->
+    <template id="projects-list-template">
+      <li class="list-group-item project-actions">
+        <div class="row">
+          <div class="col">
+            <a href="#" class="project-link"> </a>
+          </div>
+          <div class="col-6">
+            <button type="button" class="btn btn-outline-warning btn-sm edit-project-btn" data-toggle="modal" data-target=".modal-edit-project"> Edit </button>
+            <button type="button" class="btn btn-outline-danger btn-sm btn-sm remove-project"> Remove </button>
+          </div>
+        </div>
+      </li>
+    </template>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "todo list app",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --progress -p",
+    "watch": "webpack --progress --watch",
+    "server": "webpack-dev-server --open-page 'dist/'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efrapp/todo-list.git"
+  },
+  "author": "Efrain Pinto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/efrapp/todo-list/issues"
+  },
+  "homepage": "https://github.com/efrapp/todo-list#readme",
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "date-fns": "^2.7.0",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0"
+  }
+}
