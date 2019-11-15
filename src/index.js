@@ -158,6 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     projects.push(newProject);
     newProject.show();
     localStorage.setItem('projects', JSON.stringify(projects));
+
+    projectNameInput.value = '';
   });
 
   projectsNode.addEventListener('click', (e) => {
