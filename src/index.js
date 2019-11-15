@@ -212,18 +212,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const el = e.target;
 
     if (el && el.matches('button.create-todo-btn')) {
-      const title = el.parentElement.querySelector('.todo-title-field').value;
-      const description = el.parentElement.querySelector('.todo-description-field').value;
-      const dueDate = formatDueDate(el.parentElement.querySelector('.todo-due-date-field').value);
-      const priority = el.parentElement.querySelector('.todo-priority-field').value;
+      const title = el.parentElement.querySelector('.todo-title-field');
+      const description = el.parentElement.querySelector('.todo-description-field');
+      const dueDate = el.parentElement.querySelector('.todo-due-date-field');
+      const priority = el.parentElement.querySelector('.todo-priority-field');
       const project = findProject(el.closest('div.new-todo').dataset.projectId);
       const todo = Todo({
-        title, description, dueDate, priority, projectId: project.id,
+        title: title.value,
+        description: description.value,
+        dueDate: formatDueDate(dueDate.value),
+        priority: priority.value,
+        projectId: project.id,
       });
 
       todos.push(todo);
       project.addTodo(todo);
       localStorage.setItem('todos', JSON.stringify(todos));
+
+      title.value = '';
+      description.value = '';
+      dueDate.value = '';
+      priority.value = '1';
     }
 
     if (el && el.matches('button.update-todo-btn')) {
